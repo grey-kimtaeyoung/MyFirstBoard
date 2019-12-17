@@ -1,9 +1,10 @@
 package com.StudyBoardCRUD.firstBoard.normalBoard.service;
 
 import com.StudyBoardCRUD.firstBoard.normalBoard.dto.Board;
+import java.util.List;
 
 public interface BoardService {
 
-  Board findBoardListByBoardType(String boardType);
+  List<Board> findBoardListByBoardType(String boardType);
 
 }

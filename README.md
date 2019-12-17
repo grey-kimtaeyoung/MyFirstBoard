@@ -53,5 +53,37 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
 #### Spring의 Annotation
 * @RestController
     * 해당 함수를 REST controller로 만들어주는 기능
+    
 * @RequestMapping("value")
     * 입력되어있는 value를 컨트롤러 진입의 자원(resource)으로 지정하는 기능
+    
+* @GetMapping("value")
+    * HTTP GET 요청을 특정 메서드에 맵핑하기위한 annnotation 이다.
+    * @RequestMapping(method = RequestMethod.GET)의 역할을 대체 하면서, 더 가독성있게 처리해준다.
+        * __공식 코드 주석 내용__
+        * Annotation for mapping HTTP {@code GET} requests onto specific handler
+        * methods.
+        * <p>Specifically, {@code @GetMapping} is a <em>composed annotation</em> that
+        * acts as a shortcut for {@code @RequestMapping(method = RequestMethod.GET)}.
+
+* @RequestParam(value(or name) = "value", defaultValue = "default value", required = true/false)
+    * 보내주는 파라미터의 key에 맞춰 value을 받아주는 기능.
+    * required에 따라서 값의 필수 여부가 결정된다.
+    
+* @Autowired
+    * 각 상황의 타입에 맞는 IoC컨테이너 안에 존재하는 Bean을 자동으로 주입한다.
+    
+* @Service
+    * 해당 클래스의 용도를 명시적으로 알려주며, 동시에 해당 클래스를 Bean에 등록시킨다.
+    * Service Layer의 용도는 데이터 호출, 연산 처리 등의 비즈니스로직이 주를 이룬다.
+    * DDD를 적용하기 위해서는 서비스를 __애플리케이션 계층__, __도메인 계층__, __인프라 계층__ 으로 나누어 용도에 맞게 코드의 역할을 분할시켜준다. 
+
+#### 요청의 반환
+* ResponseEntity
+    * HTTP의 표준규약 형식에 맞도록 데이터 형식 및 HTTPStatus를 반환하기 위해서 사용한다.
+    * 올바른 응답 코드 및 데이터 구성 형식을 갖출수 있게 된다.
+    * 표준 규약을 지킬 경우 frond <> back이 서로 에러상황에 맞춰 정상적인 처리를 유도 할 수 있다.
+    
+#### JPA 사용하기
+* Repository 만들기
+    * repository로 사용 할 interface를 만들어 준 뒤 JpaRepository interface를 상속받아 구현한다.
