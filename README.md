@@ -45,4 +45,4 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
 #### Spock 
 * Spock으로 테스트코드를 짜보자[http://woowabros.github.io/study/2018/03/01/spock-test.html]
 * Spock 이란?
-    *
+    * 기존 Junit의 보일러 플레이트를 최대한 제거하고, 다양한 케이스를 테스트하기에 적합하게 개발된 기능
