@@ -34,15 +34,24 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
 
 #### Lombok Annotation 정리
 * @Getter
-    *
+    * 입력되어 있는 요소들의 getter를 자동으로 생성한다.
 * @Setter
-    *
+    * 입력되어 있는 요소들의 setter를 자동으로 생성한다.
 * @AllArgsConstructor
-    *
+    * 모든 요소들의 값을 입력받는 constructor를 자동으로 생성한다.
 * @NoArgsConstructor
-    *
+    * 기본 constructor를 자동으로 생성한다.
 
 #### Spock 
-* Spock으로 테스트코드를 짜보자[http://woowabros.github.io/study/2018/03/01/spock-test.html]
+* [Spock으로 테스트코드를 짜보자](http://woowabros.github.io/study/2018/03/01/spock-test.html)
 * Spock 이란?
     * 기존 Junit의 보일러 플레이트를 최대한 제거하고, 다양한 케이스를 테스트하기에 적합하게 개발된 기능
+    * 테스트 코드를 작성하며 추가적으로 보완해나갈 예정
+
+
+### 19.12.17 
+#### Spring의 Annotation
+* @RestController
+    * 해당 함수를 REST controller로 만들어주는 기능
+* @RequestMapping("value")
+    * 입력되어있는 value를 컨트롤러 진입의 자원(resource)으로 지정하는 기능

@@ -1,4 +1,4 @@
-package com.StudyBoardCRUD.firstBoard.normalBoard.DTO;
+package com.StudyBoardCRUD.firstBoard.normalBoard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,4 +13,5 @@ public class Board {
   private long id;
   private String title;
   private String content;
+  private String boardType;
 }
