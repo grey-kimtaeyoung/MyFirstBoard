@@ -29,5 +29,5 @@
 * Server : AWS(EC2, RDS, Redis)
 
 ### 개인 Repository
-* kimtaeyoung
+* [kimtaeyoung](https://github.com/grey-kimtaeyoung/FirstBoard)
 * dayoung
