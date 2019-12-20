@@ -157,3 +157,140 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
     * @OneToOne - 다른 Entity클래스와의 외래키 다대일(N:1)관계를 명시합니다. 
     * @ManyToOne - 다른 Entity클래스와의 외래키 다대일(N:1)관계를 명시합니다. 
     * @OneToMany - 다른 Entity클래스와 일대다(1:N)관계를 명시합니다. mappedBy에는 제네릭스로 명시된 Cart Entity가 외래키 설정에서 사용한 참조변수 이름입니다. 반대편이 Many 설정일 경우에는 반드시 컬렉션프레임워크(List나 Set)을 사용합니다.  방향성에 대한 자세한 내용은 다음 포스팅을 참고하시기 바랍니다. ☞ JPA Entity간의 방향 설정하기
+    
+### 19.12.20 
+* * * 
+#### Spring 이론
+* [DI(Dependency Injection)이란 무엇인가?](https://gmlwjd9405.github.io/2018/11/09/dependency-injection.html)
+    * 객체 자체가 아니라 Framework에 의해 객체의 의존성이 주입되는 설계 패턴
+        * 의존성이 동적으로 주입되므로, 여러 객체간의 결합이 줄어든다.
+        * DI는 spring에서 지원하는 IoC의 형태
+    * example
+        ```java
+        /*
+            PetOwner 객체는 AnimalType 객체(Dog)에 의존한다.
+            PetOwner 생성자에서 new Dog();를 통해 Dog에 의존성을 가진다.
+            이 접근법의 문제점(의존성이 위험한 이유)
+            PetOwner 객체는 AnimalType 객체의 생성을 제어하기 때문에 두 객체 간에는 긴밀한 결합(tight coupling)이 생기고, tight coupling에 따라 AnimalType 객체를 변경하면 PetOwner객체도 변경된다.
+            즉, 하나의 모듈이 바뀌면 의존한 다른 모듈까지 변경 되어야 한다.
+            또한 두 객체 사이의 의존성이 존재하면 Unit Test 작성이 어려워 진다.
+        */
+        public class PetOwner{
+            private AnimalType animal;
+        
+            public PetOwner() {
+                this.animal = new Dog();
+            }
+        }
+        ```
+      
+        ```java
+        /*
+          인터페이스를 이용하여 구현을 분리시키고, 메인 로직에서 의존성을 주입시킨다.      
+        */
+        public interface AninalType {
+          public void sound();
+        }
+      
+        public class Cat implements AninalType {
+          String myName;
+          public void setMyName(String name) {
+              this.myName = name;
+          }
+          public void sound() {
+              System.out.println("Cat: " + myName + 
+               "-Meow");
+          }
+        }
+      
+        public class Cat implements AninalType {
+          String myName;
+          public void setMyName(String name) {
+              this.myName = name;
+          }
+          public void sound() {
+              System.out.println("Cat: " + myName + 
+               "-Meow");
+          }
+        }
+      
+        public class PetOwner {
+          public AnimalType animal;
+          public PetOwner(AninalType animal) {
+              this.animal = animal;
+          }
+          public void play() {
+              animal.sound();
+          }
+        }
+      
+        public class MainApp {
+          public static void main(String[] args) {
+              /* main함수에서 Container를 생성 */ 
+              // 설정 파일은 인자로 넣고, 해당 설정 파일에 맞게 bean들을 만든다.
+              ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/di/beans/animal.xml");
+              // getBean()을 통해 bean의 주소값을 가져온다.  
+              PetOwner person = (PerOwner) context.getBean("petOwner");
+              person.play();
+              context.close();
+          } 
+        }
+
+        ```
+
+* [생성자 주입을 사용해야 하는 이유, 필드인젝션이 좋지 않은 이유](https://yaboong.github.io/spring/2019/08/29/why-field-injection-is-bad/)
+    * 스프링에서 DI 방법 세가지
+        ```java
+          //Filed Injection
+          @Service
+          public class StudentServiceImpl implements StudentService {
+          
+              @Autowired
+              private CourseService courseService;
+          
+              @Override
+              public void studentMethod() {
+                  courseService.courseMethod();
+              }
+          
+          }
+      
+          //Setter Base Injection
+          @Service
+          public class StudentServiceImpl implements StudentService {
+          
+              private CourseService courseService;
+          
+              @Autowired
+              public void setCourseService(CourseService courseService) {
+                  this.courseService = courseService;
+              }
+          
+              @Override
+              public void studentMethod() {
+                  courseService.courseMethod();
+              }
+          }
+      
+          //Constructor Base Injection
+          @Service
+          public class StudentServiceImpl implements StudentService {
+          
+              private final CourseService courseService;
+          
+              @Autowired
+              public StudentServiceImpl(CourseService courseService) {
+                  this.courseService = courseService;
+              }
+          
+              @Override
+              public void studentMethod() {
+                  courseService.courseMethod();
+              }
+          }
+        ```
+ * Constructor Base Injection 의 장점
+    * NullPointerException 을 방지할 수 있다.
+    * 주입받을 필드를 final 로 선언 가능하다.
+    * (Spring에서의 장점) 생성자 주입을 이용한 순환참조를 컴파일타임에 확인하여 방지 할 수 있다.
+    * 테스트 코드를 작성하기 좋다.
