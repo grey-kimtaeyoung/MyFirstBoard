@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class BoardServiceImpl implements BoardService {
 
-  @Autowired
+  private final
   BoardRepository boardRepository;
 
+  @Autowired
+  public BoardServiceImpl(BoardRepository boardRepository) {
+    this.boardRepository = boardRepository;
+  }
+
   @Override
-  public List<BoardDto> findBoardListByBoardType(String boardType) {
-    List<BoardDto> boardDtoList = boardRepository.findBoardsByType(boardType);
-    return boardDtoList;
+  public List<BoardDto> findBoardListByBoardType(long boardType) {
+    return boardRepository.findBoardsByBoardType(boardType);
   }
 }

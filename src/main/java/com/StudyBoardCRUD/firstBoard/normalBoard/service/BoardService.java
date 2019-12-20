@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface BoardService {
 
-  List<BoardDto> findBoardListByBoardType(String boardType);
+  List<BoardDto> findBoardListByBoardType(long boardType);
 
 }

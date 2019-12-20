@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/board")
 public class BoardController {
 
+  private final BoardService boardService;
+
   @Autowired
-  BoardService boardService;
+  public BoardController(BoardService boardService) {
+    this.boardService = boardService;
+  }
 
   @GetMapping("/list")
   public ResponseEntity<List<BoardDto>> getBoardList(

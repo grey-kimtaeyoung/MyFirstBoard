@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardRepository extends JpaRepository<BoardDto, Long> {
 
-  List<BoardDto> findBoardsByType(String boardType);
+  List<BoardDto> findBoardsByBoardType(Long boardType);
 
 }
