@@ -1,5 +1,6 @@
 # CRUD-board-basic
 ## 학습 내용 정리
+* * *
 ### 19.12.16 
 * * * 
 #### JavaBeans란?
@@ -49,7 +50,7 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
     * 기존 Junit의 보일러 플레이트를 최대한 제거하고, 다양한 케이스를 테스트하기에 적합하게 개발된 기능
     * 테스트 코드를 작성하며 추가적으로 보완해나갈 예정
 
-
+* * *
 ### 19.12.17 
 * * * 
 #### Spring의 Annotation - 1
@@ -90,7 +91,7 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
 * Repository 만들기
     * repository로 사용 할 interface를 만들어 준 뒤 JpaRepository interface를 상속받아 구현한다.
     
-
+* * *
 ### 19.12.18 
 * * * 
 #### Spring의 Annotation - 2
