@@ -360,7 +360,32 @@ DTO는 Data Transfer Object, VO는 Value Object의 약자이다.
       
     * [sornalint info] MyOwnRuntimeException()을 생성하여 오류를 처리 할 것을 경고하였다.
 
+* * * 
 ### 19.12.22 
 * * * 
-#### JPA 사용하기 - 3
-* Relation(관계)
+#### Spring 이론 - 2
+* Spring의 Bean 관리 방식
+    * @RestController, @Service, @Bean 등과 같은 Bean 등록 어노테이션을 사용하면
+      이후로 해당 Bean과 동일한 이름을 갖고있는 서비스를 찾아서 매칭시킨다.
+      굳이 @Autowired을 이용해 찾아 줄 필요 없이 이름을 매칭시켜주면 된다.
+        
+#### Lombok 셋팅하기
+* Lombok이란?
+    * Lombok은 자바에서 @Getter, @Setter 같은 annotation 기반으로 관련 기존 DTO, VO, Domain Class 작성할 때, 멤버 변수에 대한 Getter/Setter Method, Equals(), hashCode(), ToString()과 멤버 변수에 값을 설정하는 생성자 등등을 자동으로 생성해 주는 라이브러리다.
+    
+    * gradle setting
+        ```
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        ```
+      
+    * intelliJ 셋팅
+        1. cmd + ,
+        2. Annotation Processors
+        3. Enable annotation processing
+    
+#### Entity와 DTO
+* 차이점
+    * Entity는 영속성을 관리(JPA) 
+    * DTO는 Entity를 통해 획득한 데이터를 계층간 전달해주는 용도.
+      Entity와 동일할 필요는 없으며, 전달시켜야하는 데이터의 형태에 맞춰 값을 수정해도 된다.
