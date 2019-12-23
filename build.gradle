@@ -28,6 +28,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	compile 'org.springframework.boot:spring-boot-starter-aop'
 	compile 'org.spockframework.spock:spock-core:spock-1.3'
 	compile 'org.spockframework.spock:spock-spring:spock-1.3'
 }
