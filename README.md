@@ -1,6 +1,148 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.24 
+* * * 
+* Builder 이용하여 DTO 개선하기
+    * Builder란?
+        * GoF에서 말하는 Builder 패턴의 목적
+            * 객체의 생성 알고리즘과 조립 방법을 분리하는 것이 목적이다.
+        * Effective-Java에서 말하는 Builder 패턴의 목적
+            * 객체 생성을 깔끔하고 유연하게 하기 위한 기법
+        * 점층적 생성자 패턴
+            * 다른 생성자를 호출하는 생성자가 많으므로, 인자가 추가되는 일이 발생하면 코드를 수정하기 어렵다.
+            * 코드 가독성이 떨어진다. 특히 인자 수가 많을 때 호출 코드만 봐서는 의미를 알기 어렵다.
+            * example
+                ```java
+                  // 점층적 생성자 패턴 코드의 예 : 회원가입 관련 코드
+                  public class Member {
+                  
+                      private final String name;      // 필수 인자
+                      private final String location;  // 선택적 인자
+                      private final String hobby;     // 선택적 인자
+                  
+                      // 필수 생성자
+                      public Member(String name) {
+                          this(name, "출신지역 비공개", "취미 비공개");
+                      }
+                  
+                      // 1 개의 선택적 인자를 받는 생성자
+                      public Member(String name, String location) {
+                          this(name, location, "취미 비공개");
+                      }
+                  
+                      // 모든 선택적 인자를 다 받는 생성자
+                      public Member(String name, String location, String hobby) {
+                          this.name = name;
+                          this.location = location;
+                          this.hobby = hobby;
+                      }
+                  }
+                ```
+        * 자바빈 패턴
+            * 객체 일관성(consistency)이 깨진다.
+            * 1회의 호출로 객체 생성이 끝나지 않았다.
+            * 즉 한 번에 생성하지 않고 생성한 객체에 값을 떡칠하고 있다.
+            * setter 메서드가 있으므로 변경 불가능(immutable)클래스를 만들 수가 없다.
+            * 스레드 안전성을 확보하려면 점층적 생성자 패턴보다 많은 일을 해야 한다.
+            * example
+                ```java
+                public class NutritionFacts {
+                    public void main() {
+                        NutritionFacts cocaCola = new NutritionFacts();
+                        cocaCola.setServingSize(240);
+                        cocaCola.setServings(8);
+                        cocaCola.setCalories(100);
+                        cocaCola.setSodium(35);
+                        cocaCola.setCarbohdydrate(27);
+                    }
+                }
+                ```
+        * 빌더 패턴
+            * 각 인자가 어떤 의미인지 알기 쉽다.
+            * setter 메소드가 없으므로 변경 불가능 객체를 만들 수 있다.
+            * 한 번에 객체를 생성하므로 객체 일관성이 깨지지 않는다.
+            * build() 함수가 잘못된 값이 입력되었는지 검증하게 할 수도 있다.
+            * example
+                ```java
+                  // Effective Java의 Builder Pattern
+                  public class NutritionFacts {
+                      private final int servingSize;
+                      private final int servings;
+                      private final int calories;
+                      private final int fat;
+                      private final int sodium;
+                      private final int carbohydrate;
+                  
+                      public static class Builder {
+                          // Required parameters(필수 인자)
+                          private final int servingSize;
+                          private final int servings;
+                  
+                          // Optional parameters - initialized to default values(선택적 인자는 기본값으로 초기화)
+                          private int calories      = 0;
+                          private int fat           = 0;
+                          private int carbohydrate  = 0;
+                          private int sodium        = 0;
+                  
+                          public Builder(int servingSize, int servings) {
+                              this.servingSize = servingSize;
+                              this.servings    = servings;
+                          }
+                  
+                          public Builder calories(int val) {
+                              calories = val;
+                              return this;    // 이렇게 하면 . 으로 체인을 이어갈 수 있다.
+                          }
+                          public Builder fat(int val) {
+                              fat = val;
+                              return this;
+                          }
+                          public Builder carbohydrate(int val) {
+                              carbohydrate = val;
+                              return this;
+                          }
+                          public Builder sodium(int val) {
+                              sodium = val;
+                              return this;
+                          }
+                          public NutritionFacts build() {
+                              return new NutritionFacts(this);
+                          }
+                      }
+                  
+                      private NutritionFacts(Builder builder) {
+                          servingSize  = builder.servingSize;
+                          servings     = builder.servings;
+                          calories     = builder.calories;
+                          fat          = builder.fat;
+                          sodium       = builder.sodium;
+                          carbohydrate = builder.carbohydrate;
+                      }
+                  
+                      public main() {
+                          //type A
+                          NutritionFacts.Builder builder = new NutritionFacts.Builder(240, 8);
+                          builder.calories(100);
+                          builder.sodium(35);
+                          builder.carbohydrate(27);
+                          NutritionFacts cocaCola = builder.build();
+                           
+                          //type B
+                          // 각 줄마다 builder를 타이핑하지 않아도 되어 편리하다.
+                          NutritionFacts cocaCola = new NutritionFacts
+                          .Builder(240, 8)    // 필수값 입력
+                          .calories(100)
+                          .sodium(35)
+                          .carbohydrate(27)
+                          .build();           // build() 가 객체를 생성해 돌려준다.
+                      
+                      }
+                  }  
+                ```
+
+
+* * *
 ### 19.12.23 
 * * * 
 * AOP(Aspect Oriented Programming) 이론
@@ -21,7 +163,7 @@
             * 최상위 패키지에 있는 클래스에 Annotation을 적용해서 AOP를 찾을 수 있게 해준다.
         * @Aspect, @Componet 
             * 해당 클래스가 AOP가 바라보는 관점을 정의하고 bean으로 등록하는 것을 정의
-        * @Around
+        * @Around + exmaple
             * 메서드의 실행 전/후에 공통로직을 적용하고 싶을 때 사용
             * @Around("execution(* com.example.demo.service.BoardServiceImpl.*(..))") - 어떤 메서드들이 이 AOP를 적용받을 것인지를 정의
               ```java
