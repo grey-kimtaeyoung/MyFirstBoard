@@ -1,6 +1,91 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.25 
+* * * 
+* BDD(Behavior Driven Development)
+    * BDD란 무엇인가? 
+        * BDD는 한 TDD 실천자가 테스트의 의도를 더 명확하게 표현하기 위한 용어를 찾는 과정에서 탄생하였다.
+          사실 테스트라는 단어는 원하는 동작을 정의한다는 정신을 잘 반영하지 못하며 의미가 너무 함축적이다.
+          개발자 커뮤니티에서는 테스트와 테스트 메소드보다는 명세와 행위라는 용어를 거론하기 시작했다.
+    * Spock(BDD Framework)
+        * spock이란 무엇인가?
+            * Spock은 Groovy 문법을 사용하여 이해하기 쉽게 테스트 케이스를 만들 수 있도록 해주는 단위 테스트 프레임워크(unit testing framework). Groovy 기술이지만, Java 테스트도 가능
+            * Spock을 이용하여 테스트 코드를 작성하는 것은 다른 표준 테스트 프레임워크를 사용하는 것보다 시간이 덜 듭니다.(JUn it 과 Mock 프레임워크의 조합)
+            * Mocking, Stubbing 그리고 Spying 작업들을 매우 간단한 코드로 할 수 있는 쉬운 문법 덕분에 테스트 코드 로직을 변질시키지 않을 수 있습니다.
+            * Spock은 개발자들이 테스트를 BDD 같은 형식으로 구성할 수 있게 함으로써, 테스트를 더욱 명확하게 할 수 있습니다.
+            * Groovy를 사용하여 클로저와 맵을 직접 사용할 수 있어서  테스트의 명확성을 더 높일 수 있습니다.
+
+        * Setting
+            * gradle
+                ```
+                apply plugin: 'groovy'
+                dependencies {
+                        testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+                        testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
+                }
+ 
+                ```
+            * 테스트 폴더 분리
+                * 필요한 경우 테스트 폴더를 분리시켜줍니다. 파일이 그루비 파일로 생성되어 테스트에는 지장이 없으나, 나중에 어떤 테스트가 spock 테스트인지, junit 테스트인지 구분이 안 될 때가 있습니다.
+                  이러한 경우를 대비하기 위해여 폴더를 분리하는것을 추천합니다.
+                  ```
+                  project > src > test > groovy 생성
+                  ```
+            * trouble shooting
+                * 다른 IDEA는 모르겠으나, IntelliJ에서 테스트를 못찾는 오류가 종종 발생합니다. spock 셋팅이 잘못되어있거나(셋팅이랄것도 없는게 사실 gradle에 몇줄 넣어준게 끝), IntelliJ 설정이 문제가 있을 가능성이 있습니다.
+                * IntelliJ 문제인지 확인하기 위해서는 아래 커맨드를 입력하여 테스트가 정상적으로 수행되는지 확인합니다.
+                    terminal에서 gradlew가 있는 위치로 이동 후 아래 커맨드 입력
+                    ```
+                    ./gradlew test
+                    ```
+                    정상 작동 될 경우 IntelliJ의 문제이므로 아래 설정 변경 후 테스트 재실행
+                * IntelliJ 
+                    * Preference(cmd + ,) -> gradle -> build and run using 'intelliJ IDEA', Run tests using 'intelliJ IDEA'
+                    * Project Settings(cmd + ;)  -> modules -> test directory -> select Source -> Test Source Folders List Check
+        * spock의 기본 사용방법
+            하단의 example과 함께 보시면은 이해가 더 쉽습니다.
+            * Specification: extends 하면 Spock Test 클래스가 됩니다.
+            * def : groovy의 동적 타입 선언(메소드, 변수에 모두 사용할 수 있음. JS의 var 같은 존재)
+                    def 대신에 Java처럼 실제 클래스 타입을 명시할 수도 있습니다.
+            * given (혹은 setup) : 테스트 하기 위한 기본 설정작업 (테스트 환경 구축)
+            * when : 테스트할 대상 코드를 실행 (Stimulus)
+            * then : 테스트할 대상 코드의 결과를 검증 (이 메소드 범위에선 한줄한줄이 자동 assert가 됩니다.)
+            * expect : 테스트할 대상 코드를 실행 및 검증 (when + then)
+            * where : feature 메소드를 파라미터로 삼아 실행시킵니다.
+        * example
+            ```Java
+            class RestaurantTests extends Specification {
+                def "temporary test"() {
+                    given:
+                    List<Integer> list = new ArrayList<>()
+                    when:
+                    list.add(1)
+                    then:
+                    2 == list.get(0)
+                }
+
+                def "temporary second test"() {
+                    given:
+                    List<Integer> list = new ArrayList<>()
+                    when:
+                    list.add(1)
+                    then:
+                    1 == list.get(0)
+                }
+                def "computing the maximum of two numbers"() {
+                    expect:
+                    Math.max(a, b) == c
+
+                    where:
+                    a | b | c
+                    5 | 1 | 5
+                    3 | 9 | 9
+                }
+            }
+            ```
+
+* * *
 ### 19.12.24 
 * * * 
 * Builder 이용하여 DTO 개선하기
