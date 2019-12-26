@@ -7,4 +7,6 @@ public interface BoardService {
 
   List<BoardDto> findBoardListByBoardType(long boardType);
 
+  BoardDto findBoardById(long id);
+
 }
