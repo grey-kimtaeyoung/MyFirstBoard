@@ -1,6 +1,78 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.26 
+* * * 
+* REST API(REpresentational State Transfer)
+    * REST API 규칙을 적용하는 이유
+        * 다양한 프론트 환경에서 백엔드로 resource에 대한 요청을 할 때 
+          백엔드가 REST API 규칙을 이용해 작성 할 경우 통일된 요청 및 반환을 할 수 있다.
+    * Resource의 CRUD에 대한 대응 REST API의 대응
+        * CREATE -> POST
+        * READ -> GET
+        * UPDATE -> PUT/PATCH
+        * DELETE -> DELETE
+    * Resource의 분류
+        * Collection가 할 수 있는 행동
+            * Read(List), Create
+            * Collection의 Read는 할 경우 목록이 반환한다.
+        * Member가 할 수 있는 행동
+            * Read(Detail), Update, Delete
+            * Member의 Read는 각 개별 상세정보를 반환한다.
+    * URI / URL
+        * 자원을 요청할때 사용하는 구성요소
+        * example
+            ```
+            Collection
+            http://host/boards
+            Member
+            http://host/boards/{id}
+            ```
+    * JSON(Javascript Object Notation)
+        * JSON은 경량(Lightweight)의 DATA-교환 형식
+        * Javascript에서 객체를 만들 때 사용하는 표현식을 의미한다.
+        * 특정 언어에 종속되지 않으며, 대부분의 프로그래밍 언어에서 JSON 포맷의 데이터를 핸들링 할 수 있는 라이브러리를 제공한다.
+        * 해당 데이터 포맷을 이용하여 대다수의 통신에서 정보를 반환한다.
+        * example
+            ```
+            단일
+            {
+                "id": 1,
+                "boardType": 1,
+                "writer": 1,
+                "title": "first board",
+                "content": "hello world!"
+            }
+
+            목록
+            [
+                {
+                    "id": 1,
+                    "boardType": 1,
+                    "writer": 1,
+                    "title": "first board",
+                    "content": "hello world!"
+                },
+                {
+                    "id": 2,
+                    "boardType": 1,
+                    "writer": 1,
+                    "title": "second board",
+                    "content": "hello again!"
+                }
+            ]
+            ```
+    * Board API를 REST API로 구성해보기
+        * 게시판 목록 호출
+            * GET /boards/{boardType}
+        * 게시글 호출
+            * GET /boards/{id}
+        * 게시글 추가 호출
+            * POST /boards
+        * 게시글 삭제
+            * DELETE /boards/{id}
+            
+* * *
 ### 19.12.25 
 * * * 
 * BDD(Behavior Driven Development)
