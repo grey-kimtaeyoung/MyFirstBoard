@@ -2,7 +2,6 @@ package com.StudyBoardCRUD.firstBoard.normalboard.dto;
 
 import com.StudyBoardCRUD.firstBoard.normalboard.domain.entity.Board;
 import com.StudyBoardCRUD.firstBoard.normalboard.domain.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

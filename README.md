@@ -1,6 +1,45 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.27 
+* * * 
+* Junit4 - 1
+    * Annotation
+        * @RunWith(SpringRunner.class)
+            * Spring을 이용하여 테스트를 수행할 수 있도록 설정
+        * @WebMvcTest(example.class)
+            * example class를 지정하여 해당 class 테스트 수행 설정
+        * @Test
+            * 해당 함수를 테스트 함수로 명시
+    * Test Class
+        * MockMvc
+            * 브라우저에서 요청과 응답을 의미하는 객체로서 Controller 테스테 사용을 용이하게 해주는 라이브러리
+            * MockMvc의 활용방법
+                * perform
+                    * perform({method}("/uri"))
+                        * method와 uri를 지정해 해당 요청의 반환값을 확인 할 수 있다.
+                    * andExpect(expect data)
+                        * perform에 메서드 체이닝을 이용하여 반환값으로 기대되는 내용을 입력한다. 만약 해당 값이 존재 할 경우 통과, 없을경우 에러가 발생한다.
+
+            * example
+                ```
+                @Test
+                public void list() throws Exception {
+                    mvc.perform(get("/board/1"))
+                        .andExpect(status().isOk())
+                        .andExpect(content().string(containsString("\"id\":1")))
+                        .andExpect(content().string(containsString("\"write\":1")))
+                        .andExpect(content().string(containsString("\"boardType\":1")))
+                        .andExpect(content().string(containsString("\"title\":\"hello World!\"")))
+                        .andExpect(content().string(containsString("\"content\":\"it is content\"")));
+                }
+                ```
+    * 에러 발생
+        현재 구조에서 아래와같은 에러 발생. 원인 확인 필요
+        ```
+        Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.StudyBoardCRUD.firstBoard.normalboard.service.BoardService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+        ```
+* * *
 ### 19.12.26 
 * * * 
 * REST API(REpresentational State Transfer)

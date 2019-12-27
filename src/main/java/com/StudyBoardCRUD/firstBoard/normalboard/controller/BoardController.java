@@ -1,7 +1,10 @@
 package com.StudyBoardCRUD.firstBoard.normalboard.controller;
 
+import com.StudyBoardCRUD.firstBoard.normalboard.domain.entity.Board;
+import com.StudyBoardCRUD.firstBoard.normalboard.domain.entity.User;
 import com.StudyBoardCRUD.firstBoard.normalboard.dto.BoardDto;
 import com.StudyBoardCRUD.firstBoard.normalboard.service.BoardService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/board")
-public class Boardcontroller {
+public class BoardController {
 
   private final BoardService boardService;
 
   @Autowired
-  public Boardcontroller(BoardService boardService) {
+  public BoardController(BoardService boardService) {
     this.boardService = boardService;
   }
 
@@ -30,7 +33,33 @@ public class Boardcontroller {
           defaultValue = "normal",
           required = false) long boardType) {
 
-    List<BoardDto> boardDtoList = boardService.findBoardListByBoardType(boardType);
+    User writer = User.builder()
+        .id(1L)
+        .email("test@gmail.com")
+        .name("kimtaeyoung")
+        .nickName("daniel")
+        .userId("daniel_grey")
+        .build();
+
+    Board board = Board.builder()
+        .id(1L)
+        .boardType(1L)
+        .content("content")
+        .title("title")
+        .writer(writer)
+        .build();
+
+    BoardDto boardDto = BoardDto.builder()
+        .boardType(board.getBoardType())
+        .content(board.getContent())
+        .id(board.getId())
+        .title(board.getTitle())
+        .writer(board.getWriter())
+        .build();
+
+    List<BoardDto> boardDtoList = new ArrayList<BoardDto>();
+
+    boardDtoList.add(boardDto);
 
     return new ResponseEntity<>(boardDtoList, HttpStatus.OK);
   }
