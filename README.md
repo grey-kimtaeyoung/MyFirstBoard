@@ -1,9 +1,32 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.28 
+* * * 
+#### Spring 이론 - 2
+    * Annotation
+        * Component
+            * 개발자가 직접 작성한 Class를 IOC Container에 Bean으로 등록하고 spring에서 관리 할 수 있도록 변경
+            
+#### Junit - 2
+    * Annotation
+        * @SpyBean
+            * 테스트로 컨트롤러를 사용시 원하는 객체를 넣어 줄 수 있다.
+            * example
+                ```Java
+                  @SpyBean(BoardServiceImpl.class)
+                  private BoardService boardService;
+                ```
+                
+        * @MockBean
+            * 기존에 사용되던 스프링 Bean이 아닌 Mock Bean을 주입합니다. 어노테이션 내부에 문자열 값을 등록한 것은 기존에 선언된 Bean 객체를 덮어쓰기 위함입니다. 만약 Bean의 이름을 강제로 지정하지 않으면, Spring에선 어떤 Bean을 가져와야할지 알수 없어 오류가 발생합니다.
+            * 기존에 사용되던 Bean의 껍데기만 가져오고 내부의 구현 부분은 모두 사용자에게 위임 즉, 해당 Bean의 어떤 메소드가 어떤 값이 입력 되면 어떤 값이 리턴 되어야 한다는 내용 모두 개발자 필요에 의해서 조작이 가능
+    
+    
+* * *
 ### 19.12.27 
 * * * 
-* Junit4 - 1
+#### Junit4 - 1
     * Annotation
         * @RunWith(SpringRunner.class)
             * Spring을 이용하여 테스트를 수행할 수 있도록 설정
@@ -42,7 +65,7 @@
 * * *
 ### 19.12.26 
 * * * 
-* REST API(REpresentational State Transfer)
+#### REST API(REpresentational State Transfer) - 1
     * REST API 규칙을 적용하는 이유
         * 다양한 프론트 환경에서 백엔드로 resource에 대한 요청을 할 때 
           백엔드가 REST API 규칙을 이용해 작성 할 경우 통일된 요청 및 반환을 할 수 있다.
@@ -114,7 +137,7 @@
 * * *
 ### 19.12.25 
 * * * 
-* BDD(Behavior Driven Development)
+#### BDD(Behavior Driven Development) - 1
     * BDD란 무엇인가? 
         * BDD는 한 TDD 실천자가 테스트의 의도를 더 명확하게 표현하기 위한 용어를 찾는 과정에서 탄생하였다.
           사실 테스트라는 단어는 원하는 동작을 정의한다는 정신을 잘 반영하지 못하며 의미가 너무 함축적이다.
@@ -199,7 +222,7 @@
 * * *
 ### 19.12.24 
 * * * 
-* Builder 이용하여 DTO 개선하기
+#### Builder 이용하여 DTO 개선하기
     * Builder란?
         * GoF에서 말하는 Builder 패턴의 목적
             * 객체의 생성 알고리즘과 조립 방법을 분리하는 것이 목적이다.
@@ -341,7 +364,7 @@
 * * *
 ### 19.12.23 
 * * * 
-* AOP(Aspect Oriented Programming) 이론
+#### AOP(Aspect Oriented Programming)
     * AOP란 무엇인가?
         * AOP는 관점 지향 프로그래밍으로 "기능을 핵심 비즈니스 기능과 공통 기능으로 '구분'하고, 공통 기능을 개발자의 코드 밖에서 필요한 시점에 적용하는 프로그래밍 방법"이다.
         * 구성요소
@@ -486,7 +509,8 @@
 ### 19.12.20 
 * * * 
 #### Spring 이론
-* [DI(Dependency Injection)이란 무엇인가?](https://gmlwjd9405.github.io/2018/11/09/dependency-injection.html)
+* DI(Dependency Injection) 이론 - 1 
+    * [DI(Dependency Injection)이란 무엇인가?](https://gmlwjd9405.github.io/2018/11/09/dependency-injection.html)
     * 객체 자체가 아니라 Framework에 의해 객체의 의존성이 주입되는 설계 패턴
         * 의존성이 동적으로 주입되므로, 여러 객체간의 결합이 줄어든다.
         * DI는 spring에서 지원하는 IoC의 형태
