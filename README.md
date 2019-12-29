@@ -1,413 +1,432 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.29 
+* * * 
+#### Spring 이론 - 3
+* Application Layer
+    * Controller와 Service를 나누는 이유
+        * 코드의 복잡도를 낮추기 위해서. 각 계층의 역할을 나눔으로써 목적이 명확해지고 코드의 책임이 분명해진다.
+        * controller에서는 service에서 테스트를 통해 검증된 인터페이스를 사용함으로써 오류를 방지한다. 즉, 오류발생을 원천 차단할 수 있다.
+        
+#### Junit4 - 3
+* Annotation
+    * @Before
+        * @Test annotation이 동작하기 전에 먼저 객체 생성, 주입 등의 선동작을 수행한다.
+        * @Test annotation에서 공통으로 사용하는 코드를 작성해놓고 사용 할 수 있다.
+
+
+* * *
 ### 19.12.28 
 * * * 
 #### Spring 이론 - 2
-    * Annotation
-        * Component
-            * 개발자가 직접 작성한 Class를 IOC Container에 Bean으로 등록하고 spring에서 관리 할 수 있도록 변경
+* Annotation
+    * Component
+        * 개발자가 직접 작성한 Class를 IOC Container에 Bean으로 등록하고 spring에서 관리 할 수 있도록 변경
             
-#### Junit - 2
-    * Annotation
-        * @SpyBean
-            * 테스트로 컨트롤러를 사용시 원하는 객체를 넣어 줄 수 있다.
-            * example
-                ```Java
-                  @SpyBean(BoardServiceImpl.class)
-                  private BoardService boardService;
-                ```
-                
-        * @MockBean
-            * 기존에 사용되던 스프링 Bean이 아닌 Mock Bean을 주입합니다. 어노테이션 내부에 문자열 값을 등록한 것은 기존에 선언된 Bean 객체를 덮어쓰기 위함입니다. 만약 Bean의 이름을 강제로 지정하지 않으면, Spring에선 어떤 Bean을 가져와야할지 알수 없어 오류가 발생합니다.
-            * 기존에 사용되던 Bean의 껍데기만 가져오고 내부의 구현 부분은 모두 사용자에게 위임 즉, 해당 Bean의 어떤 메소드가 어떤 값이 입력 되면 어떤 값이 리턴 되어야 한다는 내용 모두 개발자 필요에 의해서 조작이 가능
+#### Junit4 - 2
+* Annotation
+    * @SpyBean
+        * 테스트로 컨트롤러를 사용시 원하는 객체를 넣어 줄 수 있다.
+        * example
+            ```Java
+              @SpyBean(BoardServiceImpl.class)
+              private BoardService boardService;
+            ```
+            
+    * @MockBean
+        * 기존에 사용되던 스프링 Bean이 아닌 Mock Bean을 주입합니다. 어노테이션 내부에 문자열 값을 등록한 것은 기존에 선언된 Bean 객체를 덮어쓰기 위함입니다. 만약 Bean의 이름을 강제로 지정하지 않으면, Spring에선 어떤 Bean을 가져와야할지 알수 없어 오류가 발생합니다.
+        * 기존에 사용되던 Bean의 껍데기만 가져오고 내부의 구현 부분은 모두 사용자에게 위임 즉, 해당 Bean의 어떤 메소드가 어떤 값이 입력 되면 어떤 값이 리턴 되어야 한다는 내용 모두 개발자 필요에 의해서 조작이 가능
     
     
 * * *
 ### 19.12.27 
 * * * 
 #### Junit4 - 1
-    * Annotation
-        * @RunWith(SpringRunner.class)
-            * Spring을 이용하여 테스트를 수행할 수 있도록 설정
-        * @WebMvcTest(example.class)
-            * example class를 지정하여 해당 class 테스트 수행 설정
-        * @Test
-            * 해당 함수를 테스트 함수로 명시
-    * Test Class
-        * MockMvc
-            * 브라우저에서 요청과 응답을 의미하는 객체로서 Controller 테스테 사용을 용이하게 해주는 라이브러리
-            * MockMvc의 활용방법
-                * perform
-                    * perform({method}("/uri"))
-                        * method와 uri를 지정해 해당 요청의 반환값을 확인 할 수 있다.
-                    * andExpect(expect data)
-                        * perform에 메서드 체이닝을 이용하여 반환값으로 기대되는 내용을 입력한다. 만약 해당 값이 존재 할 경우 통과, 없을경우 에러가 발생한다.
+* Annotation
+    * @RunWith(SpringRunner.class)
+        * Spring을 이용하여 테스트를 수행할 수 있도록 설정
+    * @WebMvcTest(example.class)
+        * example class를 지정하여 해당 class 테스트 수행 설정
+    * @Test
+        * 해당 함수를 테스트 함수로 명시
+* Test Class
+    * MockMvc
+        * 브라우저에서 요청과 응답을 의미하는 객체로서 Controller 테스테 사용을 용이하게 해주는 라이브러리
+        * MockMvc의 활용방법
+            * perform
+                * perform({method}("/uri"))
+                    * method와 uri를 지정해 해당 요청의 반환값을 확인 할 수 있다.
+                * andExpect(expect data)
+                    * perform에 메서드 체이닝을 이용하여 반환값으로 기대되는 내용을 입력한다. 만약 해당 값이 존재 할 경우 통과, 없을경우 에러가 발생한다.
 
-            * example
-                ```
-                @Test
-                public void list() throws Exception {
-                    mvc.perform(get("/board/1"))
-                        .andExpect(status().isOk())
-                        .andExpect(content().string(containsString("\"id\":1")))
-                        .andExpect(content().string(containsString("\"write\":1")))
-                        .andExpect(content().string(containsString("\"boardType\":1")))
-                        .andExpect(content().string(containsString("\"title\":\"hello World!\"")))
-                        .andExpect(content().string(containsString("\"content\":\"it is content\"")));
-                }
-                ```
-    * 에러 발생
-        현재 구조에서 아래와같은 에러 발생. 원인 확인 필요
-        ```
-        Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.StudyBoardCRUD.firstBoard.normalboard.service.BoardService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
-        ```
+        * example
+            ```
+            @Test
+            public void list() throws Exception {
+                mvc.perform(get("/board/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(containsString("\"id\":1")))
+                    .andExpect(content().string(containsString("\"write\":1")))
+                    .andExpect(content().string(containsString("\"boardType\":1")))
+                    .andExpect(content().string(containsString("\"title\":\"hello World!\"")))
+                    .andExpect(content().string(containsString("\"content\":\"it is content\"")));
+            }
+            ```
+* 에러 발생
+    현재 구조에서 아래와같은 에러 발생. 원인 확인 필요
+    ```
+    Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.StudyBoardCRUD.firstBoard.normalboard.service.BoardService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+    ```
+  
+  
 * * *
 ### 19.12.26 
 * * * 
 #### REST API(REpresentational State Transfer) - 1
-    * REST API 규칙을 적용하는 이유
-        * 다양한 프론트 환경에서 백엔드로 resource에 대한 요청을 할 때 
-          백엔드가 REST API 규칙을 이용해 작성 할 경우 통일된 요청 및 반환을 할 수 있다.
-    * Resource의 CRUD에 대한 대응 REST API의 대응
-        * CREATE -> POST
-        * READ -> GET
-        * UPDATE -> PUT/PATCH
-        * DELETE -> DELETE
-    * Resource의 분류
-        * Collection가 할 수 있는 행동
-            * Read(List), Create
-            * Collection의 Read는 할 경우 목록이 반환한다.
-        * Member가 할 수 있는 행동
-            * Read(Detail), Update, Delete
-            * Member의 Read는 각 개별 상세정보를 반환한다.
-    * URI / URL
-        * 자원을 요청할때 사용하는 구성요소
-        * example
-            ```
-            Collection
-            http://host/boards
-            Member
-            http://host/boards/{id}
-            ```
-    * JSON(Javascript Object Notation)
-        * JSON은 경량(Lightweight)의 DATA-교환 형식
-        * Javascript에서 객체를 만들 때 사용하는 표현식을 의미한다.
-        * 특정 언어에 종속되지 않으며, 대부분의 프로그래밍 언어에서 JSON 포맷의 데이터를 핸들링 할 수 있는 라이브러리를 제공한다.
-        * 해당 데이터 포맷을 이용하여 대다수의 통신에서 정보를 반환한다.
-        * example
-            ```
-            단일
+* REST API 규칙을 적용하는 이유
+    * 다양한 프론트 환경에서 백엔드로 resource에 대한 요청을 할 때 
+      백엔드가 REST API 규칙을 이용해 작성 할 경우 통일된 요청 및 반환을 할 수 있다.
+* Resource의 CRUD에 대한 대응 REST API의 대응
+    * CREATE -> POST
+    * READ -> GET
+    * UPDATE -> PUT/PATCH
+    * DELETE -> DELETE
+* Resource의 분류
+    * Collection가 할 수 있는 행동
+        * Read(List), Create
+        * Collection의 Read는 할 경우 목록이 반환한다.
+    * Member가 할 수 있는 행동
+        * Read(Detail), Update, Delete
+        * Member의 Read는 각 개별 상세정보를 반환한다.
+* URI / URL
+    * 자원을 요청할때 사용하는 구성요소
+    * example
+        ```
+        Collection
+        http://host/boards
+        Member
+        http://host/boards/{id}
+        ```
+* JSON(Javascript Object Notation)
+    * JSON은 경량(Lightweight)의 DATA-교환 형식
+    * Javascript에서 객체를 만들 때 사용하는 표현식을 의미한다.
+    * 특정 언어에 종속되지 않으며, 대부분의 프로그래밍 언어에서 JSON 포맷의 데이터를 핸들링 할 수 있는 라이브러리를 제공한다.
+    * 해당 데이터 포맷을 이용하여 대다수의 통신에서 정보를 반환한다.
+    * example
+        ```
+        단일
+        {
+            "id": 1,
+            "boardType": 1,
+            "writer": 1,
+            "title": "first board",
+            "content": "hello world!"
+        }
+
+        목록
+        [
             {
                 "id": 1,
                 "boardType": 1,
                 "writer": 1,
                 "title": "first board",
                 "content": "hello world!"
+            },
+            {
+                "id": 2,
+                "boardType": 1,
+                "writer": 1,
+                "title": "second board",
+                "content": "hello again!"
             }
-
-            목록
-            [
-                {
-                    "id": 1,
-                    "boardType": 1,
-                    "writer": 1,
-                    "title": "first board",
-                    "content": "hello world!"
-                },
-                {
-                    "id": 2,
-                    "boardType": 1,
-                    "writer": 1,
-                    "title": "second board",
-                    "content": "hello again!"
-                }
-            ]
-            ```
-    * Board API를 REST API로 구성해보기
-        * 게시판 목록 호출
-            * GET /boards/{boardType}
-        * 게시글 호출
-            * GET /boards/{id}
-        * 게시글 추가 호출
-            * POST /boards
-        * 게시글 삭제
-            * DELETE /boards/{id}
+        ]
+        ```
+* Board API를 REST API로 구성해보기
+    * 게시판 목록 호출
+        * GET /boards/{boardType}
+    * 게시글 호출
+        * GET /boards/{id}
+    * 게시글 추가 호출
+        * POST /boards
+    * 게시글 삭제
+        * DELETE /boards/{id}
+            
             
 * * *
 ### 19.12.25 
 * * * 
 #### BDD(Behavior Driven Development) - 1
-    * BDD란 무엇인가? 
-        * BDD는 한 TDD 실천자가 테스트의 의도를 더 명확하게 표현하기 위한 용어를 찾는 과정에서 탄생하였다.
-          사실 테스트라는 단어는 원하는 동작을 정의한다는 정신을 잘 반영하지 못하며 의미가 너무 함축적이다.
-          개발자 커뮤니티에서는 테스트와 테스트 메소드보다는 명세와 행위라는 용어를 거론하기 시작했다.
-    * Spock(BDD Framework)
-        * spock이란 무엇인가?
-            * Spock은 Groovy 문법을 사용하여 이해하기 쉽게 테스트 케이스를 만들 수 있도록 해주는 단위 테스트 프레임워크(unit testing framework). Groovy 기술이지만, Java 테스트도 가능
-            * Spock을 이용하여 테스트 코드를 작성하는 것은 다른 표준 테스트 프레임워크를 사용하는 것보다 시간이 덜 듭니다.(JUn it 과 Mock 프레임워크의 조합)
-            * Mocking, Stubbing 그리고 Spying 작업들을 매우 간단한 코드로 할 수 있는 쉬운 문법 덕분에 테스트 코드 로직을 변질시키지 않을 수 있습니다.
-            * Spock은 개발자들이 테스트를 BDD 같은 형식으로 구성할 수 있게 함으로써, 테스트를 더욱 명확하게 할 수 있습니다.
-            * Groovy를 사용하여 클로저와 맵을 직접 사용할 수 있어서  테스트의 명확성을 더 높일 수 있습니다.
+* BDD란 무엇인가? 
+    * BDD는 한 TDD 실천자가 테스트의 의도를 더 명확하게 표현하기 위한 용어를 찾는 과정에서 탄생하였다.
+      사실 테스트라는 단어는 원하는 동작을 정의한다는 정신을 잘 반영하지 못하며 의미가 너무 함축적이다.
+      개발자 커뮤니티에서는 테스트와 테스트 메소드보다는 명세와 행위라는 용어를 거론하기 시작했다.
+* Spock(BDD Framework)
+    * spock이란 무엇인가?
+        * Spock은 Groovy 문법을 사용하여 이해하기 쉽게 테스트 케이스를 만들 수 있도록 해주는 단위 테스트 프레임워크(unit testing framework). Groovy 기술이지만, Java 테스트도 가능
+        * Spock을 이용하여 테스트 코드를 작성하는 것은 다른 표준 테스트 프레임워크를 사용하는 것보다 시간이 덜 듭니다.(JUn it 과 Mock 프레임워크의 조합)
+        * Mocking, Stubbing 그리고 Spying 작업들을 매우 간단한 코드로 할 수 있는 쉬운 문법 덕분에 테스트 코드 로직을 변질시키지 않을 수 있습니다.
+        * Spock은 개발자들이 테스트를 BDD 같은 형식으로 구성할 수 있게 함으로써, 테스트를 더욱 명확하게 할 수 있습니다.
+        * Groovy를 사용하여 클로저와 맵을 직접 사용할 수 있어서  테스트의 명확성을 더 높일 수 있습니다.
 
-        * Setting
-            * gradle
-                ```
-                apply plugin: 'groovy'
-                dependencies {
-                        testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
-                        testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
-                }
- 
-                ```
-            * 테스트 폴더 분리
-                * 필요한 경우 테스트 폴더를 분리시켜줍니다. 파일이 그루비 파일로 생성되어 테스트에는 지장이 없으나, 나중에 어떤 테스트가 spock 테스트인지, junit 테스트인지 구분이 안 될 때가 있습니다.
-                  이러한 경우를 대비하기 위해여 폴더를 분리하는것을 추천합니다.
-                  ```
-                  project > src > test > groovy 생성
-                  ```
-            * trouble shooting
-                * 다른 IDEA는 모르겠으나, IntelliJ에서 테스트를 못찾는 오류가 종종 발생합니다. spock 셋팅이 잘못되어있거나(셋팅이랄것도 없는게 사실 gradle에 몇줄 넣어준게 끝), IntelliJ 설정이 문제가 있을 가능성이 있습니다.
-                * IntelliJ 문제인지 확인하기 위해서는 아래 커맨드를 입력하여 테스트가 정상적으로 수행되는지 확인합니다.
-                    terminal에서 gradlew가 있는 위치로 이동 후 아래 커맨드 입력
-                    ```
-                    ./gradlew test
-                    ```
-                    정상 작동 될 경우 IntelliJ의 문제이므로 아래 설정 변경 후 테스트 재실행
-                * IntelliJ 
-                    * Preference(cmd + ,) -> gradle -> build and run using 'intelliJ IDEA', Run tests using 'intelliJ IDEA'
-                    * Project Settings(cmd + ;)  -> modules -> test directory -> select Source -> Test Source Folders List Check
-        * spock의 기본 사용방법
-            하단의 example과 함께 보시면은 이해가 더 쉽습니다.
-            * Specification: extends 하면 Spock Test 클래스가 됩니다.
-            * def : groovy의 동적 타입 선언(메소드, 변수에 모두 사용할 수 있음. JS의 var 같은 존재)
-                    def 대신에 Java처럼 실제 클래스 타입을 명시할 수도 있습니다.
-            * given (혹은 setup) : 테스트 하기 위한 기본 설정작업 (테스트 환경 구축)
-            * when : 테스트할 대상 코드를 실행 (Stimulus)
-            * then : 테스트할 대상 코드의 결과를 검증 (이 메소드 범위에선 한줄한줄이 자동 assert가 됩니다.)
-            * expect : 테스트할 대상 코드를 실행 및 검증 (when + then)
-            * where : feature 메소드를 파라미터로 삼아 실행시킵니다.
-        * example
-            ```Java
-            class RestaurantTests extends Specification {
-                def "temporary test"() {
-                    given:
-                    List<Integer> list = new ArrayList<>()
-                    when:
-                    list.add(1)
-                    then:
-                    2 == list.get(0)
-                }
-
-                def "temporary second test"() {
-                    given:
-                    List<Integer> list = new ArrayList<>()
-                    when:
-                    list.add(1)
-                    then:
-                    1 == list.get(0)
-                }
-                def "computing the maximum of two numbers"() {
-                    expect:
-                    Math.max(a, b) == c
-
-                    where:
-                    a | b | c
-                    5 | 1 | 5
-                    3 | 9 | 9
-                }
-            }
+    * Setting
+        * gradle
             ```
+            apply plugin: 'groovy'
+            dependencies {
+                    testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+                    testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
+            }
+
+            ```
+        * 테스트 폴더 분리
+            * 필요한 경우 테스트 폴더를 분리시켜줍니다. 파일이 그루비 파일로 생성되어 테스트에는 지장이 없으나, 나중에 어떤 테스트가 spock 테스트인지, junit 테스트인지 구분이 안 될 때가 있습니다.
+              이러한 경우를 대비하기 위해여 폴더를 분리하는것을 추천합니다.
+              ```
+              project > src > test > groovy 생성
+              ```
+        * trouble shooting
+            * 다른 IDEA는 모르겠으나, IntelliJ에서 테스트를 못찾는 오류가 종종 발생합니다. spock 셋팅이 잘못되어있거나(셋팅이랄것도 없는게 사실 gradle에 몇줄 넣어준게 끝), IntelliJ 설정이 문제가 있을 가능성이 있습니다.
+            * IntelliJ 문제인지 확인하기 위해서는 아래 커맨드를 입력하여 테스트가 정상적으로 수행되는지 확인합니다.
+                terminal에서 gradlew가 있는 위치로 이동 후 아래 커맨드 입력
+                ```
+                ./gradlew test
+                ```
+                정상 작동 될 경우 IntelliJ의 문제이므로 아래 설정 변경 후 테스트 재실행
+            * IntelliJ 
+                * Preference(cmd + ,) -> gradle -> build and run using 'intelliJ IDEA', Run tests using 'intelliJ IDEA'
+                * Project Settings(cmd + ;)  -> modules -> test directory -> select Source -> Test Source Folders List Check
+    * spock의 기본 사용방법
+        하단의 example과 함께 보시면은 이해가 더 쉽습니다.
+        * Specification: extends 하면 Spock Test 클래스가 됩니다.
+        * def : groovy의 동적 타입 선언(메소드, 변수에 모두 사용할 수 있음. JS의 var 같은 존재)
+                def 대신에 Java처럼 실제 클래스 타입을 명시할 수도 있습니다.
+        * given (혹은 setup) : 테스트 하기 위한 기본 설정작업 (테스트 환경 구축)
+        * when : 테스트할 대상 코드를 실행 (Stimulus)
+        * then : 테스트할 대상 코드의 결과를 검증 (이 메소드 범위에선 한줄한줄이 자동 assert가 됩니다.)
+        * expect : 테스트할 대상 코드를 실행 및 검증 (when + then)
+        * where : feature 메소드를 파라미터로 삼아 실행시킵니다.
+    * example
+        ```Java
+        class RestaurantTests extends Specification {
+            def "temporary test"() {
+                given:
+                List<Integer> list = new ArrayList<>()
+                when:
+                list.add(1)
+                then:
+                2 == list.get(0)
+            }
+
+            def "temporary second test"() {
+                given:
+                List<Integer> list = new ArrayList<>()
+                when:
+                list.add(1)
+                then:
+                1 == list.get(0)
+            }
+            def "computing the maximum of two numbers"() {
+                expect:
+                Math.max(a, b) == c
+
+                where:
+                a | b | c
+                5 | 1 | 5
+                3 | 9 | 9
+            }
+        }
+        ```
+
 
 * * *
 ### 19.12.24 
 * * * 
 #### Builder 이용하여 DTO 개선하기
-    * Builder란?
-        * GoF에서 말하는 Builder 패턴의 목적
-            * 객체의 생성 알고리즘과 조립 방법을 분리하는 것이 목적이다.
-        * Effective-Java에서 말하는 Builder 패턴의 목적
-            * 객체 생성을 깔끔하고 유연하게 하기 위한 기법
-        * 점층적 생성자 패턴
-            * 다른 생성자를 호출하는 생성자가 많으므로, 인자가 추가되는 일이 발생하면 코드를 수정하기 어렵다.
-            * 코드 가독성이 떨어진다. 특히 인자 수가 많을 때 호출 코드만 봐서는 의미를 알기 어렵다.
-            * example
-                ```java
-                  // 점층적 생성자 패턴 코드의 예 : 회원가입 관련 코드
-                  public class Member {
-                  
-                      private final String name;      // 필수 인자
-                      private final String location;  // 선택적 인자
-                      private final String hobby;     // 선택적 인자
-                  
-                      // 필수 생성자
-                      public Member(String name) {
-                          this(name, "출신지역 비공개", "취미 비공개");
-                      }
-                  
-                      // 1 개의 선택적 인자를 받는 생성자
-                      public Member(String name, String location) {
-                          this(name, location, "취미 비공개");
-                      }
-                  
-                      // 모든 선택적 인자를 다 받는 생성자
-                      public Member(String name, String location, String hobby) {
-                          this.name = name;
-                          this.location = location;
-                          this.hobby = hobby;
-                      }
+* Builder란?
+    * GoF에서 말하는 Builder 패턴의 목적
+        * 객체의 생성 알고리즘과 조립 방법을 분리하는 것이 목적이다.
+    * Effective-Java에서 말하는 Builder 패턴의 목적
+        * 객체 생성을 깔끔하고 유연하게 하기 위한 기법
+    * 점층적 생성자 패턴
+        * 다른 생성자를 호출하는 생성자가 많으므로, 인자가 추가되는 일이 발생하면 코드를 수정하기 어렵다.
+        * 코드 가독성이 떨어진다. 특히 인자 수가 많을 때 호출 코드만 봐서는 의미를 알기 어렵다.
+        * example
+            ```java
+              // 점층적 생성자 패턴 코드의 예 : 회원가입 관련 코드
+              public class Member {
+              
+                  private final String name;      // 필수 인자
+                  private final String location;  // 선택적 인자
+                  private final String hobby;     // 선택적 인자
+              
+                  // 필수 생성자
+                  public Member(String name) {
+                      this(name, "출신지역 비공개", "취미 비공개");
                   }
-                ```
-        * 자바빈 패턴
-            * 객체 일관성(consistency)이 깨진다.
-            * 1회의 호출로 객체 생성이 끝나지 않았다.
-            * 즉 한 번에 생성하지 않고 생성한 객체에 값을 떡칠하고 있다.
-            * setter 메서드가 있으므로 변경 불가능(immutable)클래스를 만들 수가 없다.
-            * 스레드 안전성을 확보하려면 점층적 생성자 패턴보다 많은 일을 해야 한다.
-            * example
-                ```java
-                public class NutritionFacts {
-                    public void main() {
-                        NutritionFacts cocaCola = new NutritionFacts();
-                        cocaCola.setServingSize(240);
-                        cocaCola.setServings(8);
-                        cocaCola.setCalories(100);
-                        cocaCola.setSodium(35);
-                        cocaCola.setCarbohdydrate(27);
-                    }
+              
+                  // 1 개의 선택적 인자를 받는 생성자
+                  public Member(String name, String location) {
+                      this(name, location, "취미 비공개");
+                  }
+              
+                  // 모든 선택적 인자를 다 받는 생성자
+                  public Member(String name, String location, String hobby) {
+                      this.name = name;
+                      this.location = location;
+                      this.hobby = hobby;
+                  }
+              }
+            ```
+    * 자바빈 패턴
+        * 객체 일관성(consistency)이 깨진다.
+        * 1회의 호출로 객체 생성이 끝나지 않았다.
+        * 즉 한 번에 생성하지 않고 생성한 객체에 값을 떡칠하고 있다.
+        * setter 메서드가 있으므로 변경 불가능(immutable)클래스를 만들 수가 없다.
+        * 스레드 안전성을 확보하려면 점층적 생성자 패턴보다 많은 일을 해야 한다.
+        * example
+            ```java
+            public class NutritionFacts {
+                public void main() {
+                    NutritionFacts cocaCola = new NutritionFacts();
+                    cocaCola.setServingSize(240);
+                    cocaCola.setServings(8);
+                    cocaCola.setCalories(100);
+                    cocaCola.setSodium(35);
+                    cocaCola.setCarbohdydrate(27);
                 }
-                ```
-        * 빌더 패턴
-            * 각 인자가 어떤 의미인지 알기 쉽다.
-            * setter 메소드가 없으므로 변경 불가능 객체를 만들 수 있다.
-            * 한 번에 객체를 생성하므로 객체 일관성이 깨지지 않는다.
-            * build() 함수가 잘못된 값이 입력되었는지 검증하게 할 수도 있다.
-            * example
-                ```java
-                  // Effective Java의 Builder Pattern
-                  public class NutritionFacts {
+            }
+            ```
+    * 빌더 패턴
+        * 각 인자가 어떤 의미인지 알기 쉽다.
+        * setter 메소드가 없으므로 변경 불가능 객체를 만들 수 있다.
+        * 한 번에 객체를 생성하므로 객체 일관성이 깨지지 않는다.
+        * build() 함수가 잘못된 값이 입력되었는지 검증하게 할 수도 있다.
+        * example
+            ```java
+              // Effective Java의 Builder Pattern
+              public class NutritionFacts {
+                  private final int servingSize;
+                  private final int servings;
+                  private final int calories;
+                  private final int fat;
+                  private final int sodium;
+                  private final int carbohydrate;
+              
+                  public static class Builder {
+                      // Required parameters(필수 인자)
                       private final int servingSize;
                       private final int servings;
-                      private final int calories;
-                      private final int fat;
-                      private final int sodium;
-                      private final int carbohydrate;
-                  
-                      public static class Builder {
-                          // Required parameters(필수 인자)
-                          private final int servingSize;
-                          private final int servings;
-                  
-                          // Optional parameters - initialized to default values(선택적 인자는 기본값으로 초기화)
-                          private int calories      = 0;
-                          private int fat           = 0;
-                          private int carbohydrate  = 0;
-                          private int sodium        = 0;
-                  
-                          public Builder(int servingSize, int servings) {
-                              this.servingSize = servingSize;
-                              this.servings    = servings;
-                          }
-                  
-                          public Builder calories(int val) {
-                              calories = val;
-                              return this;    // 이렇게 하면 . 으로 체인을 이어갈 수 있다.
-                          }
-                          public Builder fat(int val) {
-                              fat = val;
-                              return this;
-                          }
-                          public Builder carbohydrate(int val) {
-                              carbohydrate = val;
-                              return this;
-                          }
-                          public Builder sodium(int val) {
-                              sodium = val;
-                              return this;
-                          }
-                          public NutritionFacts build() {
-                              return new NutritionFacts(this);
-                          }
+              
+                      // Optional parameters - initialized to default values(선택적 인자는 기본값으로 초기화)
+                      private int calories      = 0;
+                      private int fat           = 0;
+                      private int carbohydrate  = 0;
+                      private int sodium        = 0;
+              
+                      public Builder(int servingSize, int servings) {
+                          this.servingSize = servingSize;
+                          this.servings    = servings;
                       }
-                  
-                      private NutritionFacts(Builder builder) {
-                          servingSize  = builder.servingSize;
-                          servings     = builder.servings;
-                          calories     = builder.calories;
-                          fat          = builder.fat;
-                          sodium       = builder.sodium;
-                          carbohydrate = builder.carbohydrate;
+              
+                      public Builder calories(int val) {
+                          calories = val;
+                          return this;    // 이렇게 하면 . 으로 체인을 이어갈 수 있다.
                       }
-                  
-                      public main() {
-                          //type A
-                          NutritionFacts.Builder builder = new NutritionFacts.Builder(240, 8);
-                          builder.calories(100);
-                          builder.sodium(35);
-                          builder.carbohydrate(27);
-                          NutritionFacts cocaCola = builder.build();
-                           
-                          //type B
-                          // 각 줄마다 builder를 타이핑하지 않아도 되어 편리하다.
-                          NutritionFacts cocaCola = new NutritionFacts
-                          .Builder(240, 8)    // 필수값 입력
-                          .calories(100)
-                          .sodium(35)
-                          .carbohydrate(27)
-                          .build();           // build() 가 객체를 생성해 돌려준다.
-                      
+                      public Builder fat(int val) {
+                          fat = val;
+                          return this;
                       }
-                  }  
-                ```
+                      public Builder carbohydrate(int val) {
+                          carbohydrate = val;
+                          return this;
+                      }
+                      public Builder sodium(int val) {
+                          sodium = val;
+                          return this;
+                      }
+                      public NutritionFacts build() {
+                          return new NutritionFacts(this);
+                      }
+                  }
+              
+                  private NutritionFacts(Builder builder) {
+                      servingSize  = builder.servingSize;
+                      servings     = builder.servings;
+                      calories     = builder.calories;
+                      fat          = builder.fat;
+                      sodium       = builder.sodium;
+                      carbohydrate = builder.carbohydrate;
+                  }
+              
+                  public main() {
+                      //type A
+                      NutritionFacts.Builder builder = new NutritionFacts.Builder(240, 8);
+                      builder.calories(100);
+                      builder.sodium(35);
+                      builder.carbohydrate(27);
+                      NutritionFacts cocaCola = builder.build();
+                       
+                      //type B
+                      // 각 줄마다 builder를 타이핑하지 않아도 되어 편리하다.
+                      NutritionFacts cocaCola = new NutritionFacts
+                      .Builder(240, 8)    // 필수값 입력
+                      .calories(100)
+                      .sodium(35)
+                      .carbohydrate(27)
+                      .build();           // build() 가 객체를 생성해 돌려준다.
+                  
+                  }
+              }  
+            ```
 
 
 * * *
 ### 19.12.23 
 * * * 
 #### AOP(Aspect Oriented Programming)
-    * AOP란 무엇인가?
-        * AOP는 관점 지향 프로그래밍으로 "기능을 핵심 비즈니스 기능과 공통 기능으로 '구분'하고, 공통 기능을 개발자의 코드 밖에서 필요한 시점에 적용하는 프로그래밍 방법"이다.
-        * 구성요소
-            * JoinPoint: 모듈의 기능이 삽입되어 동작할 수 있는 실행 가능한 특정 위치
-            * PointCut: 어떤 클래스의 어느 JoinPoint를 사용할 것인지를 결정
-            * Advice: 각 JoinPoint에 삽입되어져 동작할 수 있는 코드
-            * Interceptor: InterceptorChain 방식의 AOP 툴에서 사용하는 용어로 주로 한개의 호출 메소드를 가지는 Advice
-            * Weaving: PointCut에 의해서 결정된 JoinPoint에 지정된 Advice를 삽입하는 과정(CrossCutting)
-            * Introduction: 정적인 방식의 AOP 기술
-            * Aspect: PointCut + Advice + (Introduction)
-    * Setting
-        * Add dependencies in build.gradle compile 'org.springframework.boot:spring-boot-starter-aop'
-    * Annotation
-        * @EnableAspectJAutoProxy
-            * 최상위 패키지에 있는 클래스에 Annotation을 적용해서 AOP를 찾을 수 있게 해준다.
-        * @Aspect, @Componet 
-            * 해당 클래스가 AOP가 바라보는 관점을 정의하고 bean으로 등록하는 것을 정의
-        * @Around + exmaple
-            * 메서드의 실행 전/후에 공통로직을 적용하고 싶을 때 사용
-            * @Around("execution(* com.example.demo.service.BoardServiceImpl.*(..))") - 어떤 메서드들이 이 AOP를 적용받을 것인지를 정의
-              ```java
-                @Aspect
-                @Component
-                public class LogAspect {
-                    Logger logger =  LoggerFactory.getLogger(LogAspect.class);
-                    
-                    //BookService의 모든 메서드
-                    @Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard.BoardServiceImpl.*(..))")
-                    /*@Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard.controller..*.*(..))")*/
-                    /*@Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard..*.*(..))")*/
-                    public Object logging(ProceedingJoinPoint pjp) throws Throwable {
-                        logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
-                        Object result = pjp.proceed();
-                        logger.info("finished - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
-                        return result;
-                    }
+* AOP란 무엇인가?
+    * AOP는 관점 지향 프로그래밍으로 "기능을 핵심 비즈니스 기능과 공통 기능으로 '구분'하고, 공통 기능을 개발자의 코드 밖에서 필요한 시점에 적용하는 프로그래밍 방법"이다.
+    * 구성요소
+        * JoinPoint: 모듈의 기능이 삽입되어 동작할 수 있는 실행 가능한 특정 위치
+        * PointCut: 어떤 클래스의 어느 JoinPoint를 사용할 것인지를 결정
+        * Advice: 각 JoinPoint에 삽입되어져 동작할 수 있는 코드
+        * Interceptor: InterceptorChain 방식의 AOP 툴에서 사용하는 용어로 주로 한개의 호출 메소드를 가지는 Advice
+        * Weaving: PointCut에 의해서 결정된 JoinPoint에 지정된 Advice를 삽입하는 과정(CrossCutting)
+        * Introduction: 정적인 방식의 AOP 기술
+        * Aspect: PointCut + Advice + (Introduction)
+* Setting
+    * Add dependencies in build.gradle compile 'org.springframework.boot:spring-boot-starter-aop'
+* Annotation
+    * @EnableAspectJAutoProxy
+        * 최상위 패키지에 있는 클래스에 Annotation을 적용해서 AOP를 찾을 수 있게 해준다.
+    * @Aspect, @Componet 
+        * 해당 클래스가 AOP가 바라보는 관점을 정의하고 bean으로 등록하는 것을 정의
+    * @Around + exmaple
+        * 메서드의 실행 전/후에 공통로직을 적용하고 싶을 때 사용
+        * @Around("execution(* com.example.demo.service.BoardServiceImpl.*(..))") - 어떤 메서드들이 이 AOP를 적용받을 것인지를 정의
+          ```java
+            @Aspect
+            @Component
+            public class LogAspect {
+                Logger logger =  LoggerFactory.getLogger(LogAspect.class);
+                
+                //BookService의 모든 메서드
+                @Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard.BoardServiceImpl.*(..))")
+                /*@Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard.controller..*.*(..))")*/
+                /*@Around("execution(* com.StudyBoardCRUD.firstBoard.normalboard..*.*(..))")*/
+                public Object logging(ProceedingJoinPoint pjp) throws Throwable {
+                    logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
+                    Object result = pjp.proceed();
+                    logger.info("finished - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
+                    return result;
                 }
-                ```
-        * @Before 
-            * 메서드 실행 전에 사용
-        * @After 
-            * 메서드 실행 후에 공통 로직을 적용하고 싶을 때 사용
-              
+            }
+            ```
+    * @Before 
+        * 메서드 실행 전에 사용
+    * @After 
+        * 메서드 실행 후에 공통 로직을 적용하고 싶을 때 사용
                            
             
 * * * 
