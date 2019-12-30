@@ -1,6 +1,110 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 19.12.30 
+* * * 
+#### Junit4 - 4
+* Mock Object
+    * 정의
+        * 실제 객체를 만들기에는 비용과 시간이 많이 드는 경우, 의존성이 복잡하게 연결되어있어 제대로 구현하기 어려울 경우 생성하는 '가짜' 객체
+    
+    * Mock 객체 필요 케이스
+        1. 테스트 작성을 위한 환경 구축이 어려운 경우
+            * 환경 구축에 작업시간이 많이 필요한 경우(DB, WebServer, WebApplicationServer, FTP Server...ETC)
+            * 특정 모듈이 없어 테스트 환경을 구축하지 못하는 경우
+            * 타 부서와의 협의나 정책이 필요한 경우
+        2. 테스트가 특정 경우나 순간에 의존적인 경우
+            * 특수한 데이터가 입력되는 상황(ex.초기 회원가입시에만 나타나는 특정 선택케이스)을 매번 구현시켜기 어려울 때
+        3. 테스트 시간이 오래 걸리는 경우
+            * 클러스터링과 같이 6시간 7시간 걸리는 경우 해당 작업이 완료되었다는 가정 하에 테스트 진행
+        4. 개인 PC의 성능이나 서버의 성능문제로 오래 걸릴수 있는 경우 시간을 단축하기 위해 사용한다
+            * 특정 연산이 오래 걸릴 경우, 해당 연산의 결과값을 대체
+    
+    * Mock에 대한 기본적인 분류 개념 - 기본
+        1. 테스트 더블
+        2. 더미객체(Dummy Object)
+        3. 테스트 스텁(Test Stub)
+        4. 페이크 객체(Fake Object)
+        5. 테스트 스파이(Test Spy)
+        6. Mock 객체(Mock Object)
+
+* Mockito
+    * Mock Object Framework
+        * 단위테스트를 하기 위해 Mock을 만들어주는 프레임워크. Mock이 필요한 테스트에 직관적으로 사용가능.
+
+    * 특징
+        * 사용법이 단순하다.
+        * call("getName")처럼 이름이 호출하지 않는다.
+        * 읽기 어려운 anonymous inner클래스를 사용하지 않는다.
+        * 리펙토링이 쉽다.
+        * 작성이 어렵지 않아 테스트 자체에 집중할 수 있다.
+        * 테스트 스텁을 만드는 것과 검증을 분리한다.
+        * Mock 만드는 방법을 단일화 했다.
+        * 테스트 스텁을 만들기 쉽다.
+        * API가 간단하다.
+        * 실패 시에 발생하는 스택 트레이스가 깔끔하다.
+
+    * 사용 단계
+        1. CreateMock : 인터페이스에 해당되는 Mock 객체를 만든다.
+        2. Stub : 테스트에 필요한 Mock 객체의 동작을 지정한다.
+        3. Excercise : 테스트 메소드 내에서 Mock 객체를 사용한다.
+        4. Verify : 메서드가 예상되로 호출되었는지 검증한다.
+
+* Annotation
+    * @MockBean
+        * 기존에 사용되던 Bean의 껍데기만 가져오고 내부 구현 부분은 모두 사용자에게 위임한 형태
+          즉, 해당 Bean의 특정 메소드가 임의의 값이 입력되면 반환되는 내용이 무엇인지 모두 개발자 필요에 의해서 조작 가능
+
+        * example
+            ```
+            @MockBean
+            private BoardService boardService;
+
+            @Test
+            public void getBoardList() throws Exception {
+                List<BoardDto> boardDtos = new ArrayList<>();
+
+                User writer = User.builder()
+                    .id(1L)
+                    .email("test@gmail.com")
+                    .name("kimtaeyoung")
+                    .nickName("daniel")
+                    .userId("daniel_grey")
+                    .build();
+
+                BoardDto boardDto = BoardDto.builder()
+                    .writer(writer)
+                    .title("title")
+                    .id(1L)
+                    .content("content")
+                    .boardType(1L)
+                    .build();
+
+                boardDtos.add(boardDto);
+
+                given(boardService.findBoardListByBoardType(1L)).willReturn(boardDtos);
+
+                mvc.perform(get("/board/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(containsString("\"id\":1")))
+                    .andExpect(content().string(containsString(
+                        "\"writer\":{\"id\":1,\"userId\":null,\"password\":null,\"name\":null,\"nickName\":null,\"email\":null,\"role\":null,\"createdAt\":null,\"lastLoggedIn\":null}")))
+                    .andExpect(content().string(containsString("\"boardType\":1")))
+                    .andExpect(content().string(containsString("\"title\":\"title\"")))
+                    .andExpect(content().string(containsString("\"content\":\"content\"")));
+            }
+            ```
+
+    * given method
+        * 개발자가 직접 설정한 값으로 반환값이 생성될 것을 설정할 수 있는 메소드
+        * BDD를 위해 만들어진 기능
+
+    * MockitoAnnotations.initMocks(this)
+        * 해당 테스트 파일 내에 있는 @Mock 객체를 초기화 해주는 기능
+        * 만약 @Mock이 설정되어있는 객체가 호출되지 않은 상태일때 사용하여 주입시켜주는 역할
+        
+        
+* * *
 ### 19.12.29 
 * * * 
 #### Spring 이론 - 3
