@@ -1,6 +1,84 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.01 
+* * * 
+#### java - 1
+* java8 추가기능 [Optional](https://jdm.kr/blog/234)
+    * Optional이란?
+        * java.util.Optional<T>
+        * java8에서 최초로 도입된 기능. null으로 인해 도입 되었다. null은 개발에있어서 더 불편한 영향을 끼치고있기에, 이를 더 효율적으로 다룰 수 있는 기능을 도입
+        * “존재할 수도 있지만 안 할 수도 있는 객체”, 즉, “null이 될 수도 있는 객체”을 감싸고 있는 일종의 래퍼 클래스
+
+    * Optional의 효과
+        * NPE를 유발할 수 있는 null을 직접 다룰 필요 없어짐
+        * 수고롭게 null 체크를 직접 하지 않아도 됌
+        * 명시적으로 해당 변수가 null일 수도 있다는 가능성을 표현 가능. (따라서 불필요한 방어 로직을 최소화)
+
+    * 기존 optional을 이용하기 전 NPE 방어 수단
+        * 중첩 분기
+            ```Java
+            public String getCityOfMemberFromOrder(Order order) {
+                if (order != null) {
+                    Member member = order.getMember();
+                    if (member != null) {
+                        Address address = member.getAddress();
+                        if (address != null) {
+                            String city = address.getCity();
+                            if (city != null) {
+                                return city;
+                            }
+                        }
+                    }
+                }
+                return "Seoul"; // default
+            }
+            ```
+
+        * 반환
+            ```Java
+            public String getCityOfMemberFromOrder(Order order) {
+                if (order == null) {
+                    return "Seoul";
+                }
+                Member member = order.getMember();
+                if (member == null) {
+                    return "Seoul";
+                }
+                Address address = member.getAddress();
+                if (address == null) {
+                    return "Seoul";
+                }
+                String city = address.getCity();
+                if (city == null) {
+                    return "Seoul";
+                }
+                return city;
+            }
+            ```
+    * Optional 기본 사용 방법
+        * 변수 선언하기
+            제네릭을 제공하기 때문에, 변수를 선언할 때 명시한 타입 파라미터에 따라서 감쌀 수 있는 객체의 타입이 결정
+            ```
+            Optional<Order> maybeOrder; // Order 타입의 객체를 감쌀 수 있는 Optional 타입의 변수
+            Optional<Member> optMember; // Member 타입의 객체를 감쌀 수 있는 Optional 타입의 변수
+            Optional<Address> address; // Address 타입의 객체를 감쌀 수 있는 Optional 타입의 변수
+            ```
+
+#### Tool
+* [HTTPie](https://www.lesstif.com/pages/viewpage.action?pageId=28606741)
+    * [설치](https://httpie.org/#installation)
+
+    * 터미널에서 http 요청을 시도해볼 수 있는 툴
+
+    * 특징
+        * curl 에 비해 사용이 쉬움
+        * json 지원 기능 내장
+        * 출력을 포맷팅하여 보여주므로 가독성이 뛰어남
+        * Form 과 file 업로드가 쉬움
+        * HTTP 인증 및 커스텀 헤더 설정등
+        
+* * *
 ### 19.12.30 
 * * * 
 #### Junit4 - 4
