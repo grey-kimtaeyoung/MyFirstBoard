@@ -1,6 +1,140 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.02 
+* * * 
+#### java - 2
+* [의존 역전 원칙 (DIP)](http://wonwoo.ml/index.php/post/1717)
+    * 정의
+        * 고수준 모듈은 저수준 모듈의 구현에 의존해서는 안된다. 저수준 모듈이 고수준 모듈에서 정의한 추상 타입에 의존해야 한다.
+
+    * 고수준 모듈과 저수준 모듈
+        * 고수준 모듈 - 의미가 있는 단일 기능을 제공하는 모듈
+        * 저수준 모듈 - 고수준 모듈의 기능을 구현하기 위해 필요한 하위 기능을 실제로 구현 해놓은 모듈
+
+    * DIP 원칙을 _어긴_ 코드
+        아래 코드는 고수준 모듈이 저수준 모듈의 구현에 의존하고 있기 때문에, 저수준 모듈이 변경 될 경우 고수준 모듈에서 코드수정이 발생해야한다.
+        고수준 모듈인 Response는 저수준모듈인 JsonConverter에 의존하고있다.
+        
+        ```Java
+        public class Response {
+            private JsonConverter jsonConverter = new JsonConverter();
+
+            public String response()  {
+                byte[] bytes = null; //파일은 생략
+                return jsonConverter.convert(bytes);
+            }
+
+        }
+
+        class JsonConverter {
+
+            public String convert(byte[] bytes) {
+                //json ...
+                return "json";
+            }
+        }
+        ```
+    
+    * DIP 원칙을 _지킨_ 코드
+        Converter라는 인터페이스를 JsonConverter가 implements하였다.
+        인터페이스를 통하여 JsonConverter가 Converter에 의존한 상태가 되었다.
+        기능 변경이 필요 할 경우 고수준 모듈 Response는 동일하게 Converter 인터페이스를 사용하면 되며,
+        저수준 모듈 JsonConverter에서만 코드 변경이 발생한다.
+        만약 다른 저수준 모델이 필요 할 경우 Converter 인터페이스를 통해 implements하여 제공하면 고수준 모델은 변경사항이 발생하지 않는다.
+
+        ```Java
+            public class Response {
+
+                private Converter converter = new JsonConverter();
+
+                public String response() {
+                    byte[] bytes = null; //파일은 생략
+                    return converter.convert(bytes);
+                }
+
+            }
+
+            interface Converter {
+
+                String convert(byte[] bytes);
+
+            }
+
+            class JsonConverter implements Converter {
+
+                @Override
+                public String convert(byte[] bytes) {
+                    //json ...
+                    return "json";
+                }
+            }
+        ```
+        ```Java
+            public class Response {
+
+            private Converter converter = new XmlConverter();
+
+            public String response() {
+                byte[] bytes = null; //파일은 생략
+                return converter.convert(bytes);
+            }
+
+            }
+
+            class XmlConverter implements Converter {
+
+            @Override
+            public String convert(byte[] bytes) {
+                //xml ...
+                return "xml";
+            }
+            }
+        ```
+
+
+#### Junit4 - 2
+* Verify
+    * 정의
+        * 
+
+    * 기능
+        * 
+
+    * 예제
+        ```Java
+        @Test
+        public void update() throws Exception {
+            mvc.perform(
+                    patch("/restaurants/1004")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"JOKER Bar\", \"address\":\"Busan\"}"))
+                .andExpect(status().isOk());
+
+            verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
+        }
+        ```
+
+#### Spring의 Annotation - 3
+* @Transactional
+    * 정의
+        * 
+
+    * 기능
+        * 
+
+    * 예제
+        ```Java
+        @Transactional
+        public Restaurant updateRestaurant(Long id, String name, String address) {
+            Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+
+            restaurant.updateInformation(name, address);
+
+            return restaurant;
+        }
+        ```
+* * *
 ### 20.01.01 
 * * * 
 #### java - 1
