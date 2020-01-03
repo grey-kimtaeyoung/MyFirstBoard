@@ -1,6 +1,108 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.03 
+* * * 
+#### Junit4 - 2
+* Verify
+    * 정의
+        * Mock을 이용시에 원하는 메소드가 특정 조건으로 실행되었는지를 검증
+
+    * 기능
+        * verify()는 기본적으로 메소드 호출이 한 번 되는 것을 검증할 수 있다. 추가로 times(), atLeast(), atMost(), never()등을 사용하면 특정 호출 횟수 및 최소/최대 횟수를 지정해서 검증할 수 있다.
+        * inOrderObj.verify(mock.method())같은 형식으로 메소드에 호출 시 넘긴 값 뿐만이 아니라 메소드 호출 순서도 검증가능하다. 여러 mock의 메소드 호출 순서도 검증할 수 있다.
+        * verifyNoMoreInteractions(mockedList) mock의 행동이 모두 검증 되었는지 확인한다.
+
+    * 예제
+        ```Java
+        @Test
+        public void update() throws Exception {
+            mvc.perform(
+                    patch("/restaurants/1004")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"JOKER Bar\", \"address\":\"Busan\"}"))
+                .andExpect(status().isOk());
+
+            verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
+
+            /* 다회 검사 */
+            mockedList.add("once");
+
+            mockedList.add("twice");
+            mockedList.add("twice");
+
+            mockedList.add("three times");
+            mockedList.add("three times");
+            mockedList.add("three times");
+
+            verify(mockedList).add("once"); // times(1) 기본값
+            verify(mockedList, times(1)).add("once");
+
+            verify(mockedList, times(2)).add("twice");
+            verify(mockedList, times(3)).add("three times");
+
+            verify(mockedList, never()).add("never happened"); // 호출된 적 없음
+
+            verify(mockedList, atLeastOnce()).add("three times"); // 최소 한 번
+            verify(mockedList, atLeast(2)).add("five times"); // 최소 두 번
+            verify(mockedList, atMost(5)).add("three times"); // 최대 다섯 번
+
+            /* 메소드 호출 순서 검증 */
+            List singleMock = mock(List.class);
+
+            singleMock.add("first");
+            singleMock.add("second");
+
+            InOrder inOrder = inOrder(singleMock);
+
+            inOrder.verify(singleMock).add("first");
+            inOrder.verify(singleMock).add("second");
+
+            // multiple mocks
+            List firstMock = mock(List.class);
+            List secondMock = mock(List.class);
+
+            //using mocks
+            firstMock.add("first");
+            secondMock.add("second");
+
+            InOrder inOrder = inOrder(firstMock, secondMock); // pass multiple mocks to verify
+
+            inOrder.verify(firstMock).add("first");
+            inOrder.verify(secondMock).add("second");
+
+            /* mock이 모두 검증되었는지 확인 */
+            mockedList.add("one");
+            mockedList.add("two");
+
+            verify(mockedList).add("one");
+
+            verifyNoMoreInteractions(mockedList); // fail here
+        }
+        ```
+
+
+#### Spring의 Annotation - 3
+* @Transactional
+    * 정의
+        * 
+
+    * 기능
+        * 
+
+    * 예제
+        ```Java
+        @Transactional
+        public Restaurant updateRestaurant(Long id, String name, String address) {
+            Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+
+            restaurant.updateInformation(name, address);
+
+            return restaurant;
+        }
+        ```
+      
+* * *
 ### 20.01.02 
 * * * 
 #### java - 2
