@@ -1,6 +1,109 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.04 
+* * * 
+#### Spring의 Annotation - 3
+* @Transactional
+    * 정의
+        * 스프링에서는 트랜잭션 처리를 지원하는데 그중 어노테이션 방식으로 @Transactional을 선언하여 사용하는 방법이 일반적이며, 선언적 트랜잭션이라 부른다.
+
+    * 특징
+        * 원자성(Atomicity) - 한 트랜잭션 내에서 실행한 작업들은 하나로 간주한다. 즉, 모두 성공 또는 모두 실패. 
+        * 일관성(Consistency) - 트랜잭션은 일관성 있는 데이타베이스 상태를 유지한다. (data integrity 만족 등.)
+        * 격리성(Isolation) - 동시에 실행되는 트랜잭션들이 서로 영향을 미치지 않도록 격리해야한다. 
+        * 지속성(Durability) - 트랜잭션을 성공적으로 마치면 결과가 항상 저장되어야 한다.
+
+    * 기능
+        * @Transactional 어노테이션을 선언한 클래스에 트랜잭션 기능이 적용된 프록시 객체가 생성된다. 해당 프록시 객체는 어노테이션이 포함된 메소드가 호출 될 경우 PlatformTransactionManager를 사용하여 트랜잭션을 시작하고, 정상 여부에 따라 Commit 또는 Rollback 한다.
+
+    * 예제
+        ```Java
+            @Transactional
+            public Restaurant updateRestaurant(Long id, String name, String address) {
+                Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+
+                restaurant.updateInformation(name, address);
+
+                return restaurant;
+            }
+        ```
+    * 더보기
+        * [PlatformTransactionManager](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html)
+
+* @NotEmpty, @NotNull, @NotBlank
+    * 정의
+        * 도메인 값을 입력 할 때, 특정 상태의 값들을 넣을 수 없도록 설정해주는 어노테이션
+
+    * 기능
+        * @NotEmpty : null과 ""을 허용하지 않는다.
+        * @NotNull : null을 허용하지 않는다.
+        * @NotBlank : null과 ""과 빈 공백 물자열(space)를 허용하지 않는다.
+
+    * 예제
+        ```Java
+        @NotEmpty
+        private String name;
+
+        @NotNull
+        private String address;
+
+        @NotBlank
+        private String phoneNumber;
+        ```
+
+* @Valid
+    * 정의
+        * 복잡한 유효성체크를 쉽게 처리하도록 도와주는 스프링에서 제공해주는 어노테이션
+
+    * 기능
+        * 상단의 @NotEmpty 와 같은 도메인 값 정보를 설정해주는 어노테이션을 체크하여 request를 통해 전달받은 객체의 값이 유효성이 올바른지 체크해준다.
+
+    * 예제
+        ```Java
+        @PatchMapping("restaurants/{id}")
+        public String update(@PathVariable("id") Long id,
+                            @Valid @RequestBody Restaurant resource) {
+            String name = resource.getName();
+            String address = resource.getAddress();
+
+            restaurantService.updateRestaurant(id, name, address);
+
+            return "{}";
+        }
+        ```
+
+* @ResponseBody, @RequestBody
+    * 정의
+        * 웹 서비스와 REST 방식이 시스템을 구성하는 주요 요소로 자리 잡으면서 웹 시스템간에 XML이나 JSON 등의 형식으로 데이터를 주고 받는 경우가 증가하고 있다. 이에 따라 스프링도 클라이언트에서 전송한 XML, JSON 등등의 데이터를 컨트롤러에서 DOM객체나 자바 객체로 변환해서 수신하는 기능이 컨트롤러에서 어노테이션을 이용해 제공되었다. 반대로 자바객체를 데이터타입으로 변환해서 송신하는 기능도 제공된다.
+
+    * 기능
+        * @ResponseBody : 자바 객체를 HTTP 응답 body로 변환
+        * @RequestBody : HTTP 요청 body를 자바 객체로 변환
+
+    * 예제
+        ```Java
+        @ControllerAdvice
+        public class RestaurantErrorAdvice {
+
+            @ResponseBody
+            @ResponseStatus(HttpStatus.NOT_FOUND)
+            @ExceptionHandler(RestaurantNotFoundException.class)
+            public String handleNotFound() {
+                return "{}";
+            }
+        }
+
+        @ResponseBody
+        public GuestMessageList listXml() {
+
+            GuestMessageList list = ...;
+
+            return list;
+        }
+        ```      
+      
+* * *
 ### 20.01.03 
 * * * 
 #### Junit4 - 2
@@ -81,26 +184,6 @@
         }
         ```
 
-
-#### Spring의 Annotation - 3
-* @Transactional
-    * 정의
-        * 
-
-    * 기능
-        * 
-
-    * 예제
-        ```Java
-        @Transactional
-        public Restaurant updateRestaurant(Long id, String name, String address) {
-            Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-
-            restaurant.updateInformation(name, address);
-
-            return restaurant;
-        }
-        ```
       
 * * *
 ### 20.01.02 
@@ -216,27 +299,8 @@
             verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
         }
         ```
-
-#### Spring의 Annotation - 3
-* @Transactional
-    * 정의
-        * 
-
-    * 기능
-        * 
-
-    * 예제
-        ```Java
-        @Transactional
-        public Restaurant updateRestaurant(Long id, String name, String address) {
-            Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-
-            restaurant.updateInformation(name, address);
-
-            return restaurant;
-        }
-        ```
-* * *
+      
+      
 ### 20.01.01 
 * * * 
 #### java - 1
