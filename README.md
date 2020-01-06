@@ -1,6 +1,97 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.06 
+* * * 
+##### [스프링 어노테이션 이용하여 예외처리하기](https://jeong-pro.tistory.com/195)
+* 정의
+    * 예외처리는 서비스가 비즈니스로직에 집중하기 힘들게 만든다. 예외처리를 하다보면 비즈니스로직 자체보다는 예외처리를 위한 코드가 더 많아 지는 경우도 있다. 이러한 문제를 해결하기 위해 아래 두 어노테이션을 이용하면 예외처리와 비즈니스로직을 분리하는게 가능하다.
+
+* @ControllerAdvice
+    * 기능
+        * @ExceptionHandler가 하나의 클래스에 대한 것이라면, @ControllerAdvice는 모든 @Controller 즉, 전역에서 발생할 수 있는 예외를 잡아 처리해주는 annotation이다.
+        * 아래 예제와 같이 예외처리를 담당할 클래스를 생성한뒤, 해당 클래스에 어노테이션을 붙여준다. 그 다음 @ExceptionHandler를 이용하여 처리하려는 예외로직을 작성하면된다.
+        * 특정 패키지 단위로 제한할 수 있다. @RestControllerAdvice("com.example.demo.login.controller")
+
+    * 주의사항
+        * @RestControllerAdvice는 @RestController에서만 발생하는 예외를 처리해주고, @ControllerAdvice는 @Controller에서만 발생하는 예외를 처리해준다.
+
+    * 예제
+        ```Java
+        @ControllerAdvice OR @RestControllerAdvice
+        public class RestaurantErrorAdvice {
+
+            @ResponseBody
+            @ResponseStatus(HttpStatus.NOT_FOUND)
+            @ExceptionHandler(RestaurantNotFoundException.class)
+            public String handleNotFound() {
+                return "{}";
+            }
+        }
+        ```
+
+* @ExceptionHandler(RestaurantNotFoundException.class)
+    * 기능
+        * @Controller, @RestController가 적용된 Bean 내에서 발생하는 예외를 잡아서 하나의 메서드에서 처리해주는 기능을 한다.
+        * @ExceptionHandler라는 어노테이션을 쓰고, 인자로 캐치하고싶은 예외클래스 등록
+        * @ExceptionHandler(NullPointerException.class, IOException.class)와 같이 다중 예외를 인자로 받는게 가능하다.
+    
+    * 주의사항
+        * _Contorller_, _RestController_ 에서만 사용 가능하다.
+        * 리턴타입은 자유롭게 해도 상관없다.
+        * 
+
+    * 예제
+        ```Java
+        @ControllerAdvice
+        public class RestaurantErrorAdvice {
+
+            @ResponseBody
+            @ResponseStatus(HttpStatus.NOT_FOUND)
+            @ExceptionHandler(RestaurantNotFoundException.class)
+            public String handleNotFound() {
+                return "{}";
+            }
+        }
+
+        @RestController 
+        public class MyRestController {
+            @ExceptionHandler(NullPointerException.class, IOException.class) 
+            public Object nullex(Exception e) { 
+                System.err.println(e.getClass()); return "myService"; 
+            } 
+        }
+        ```
+
+* 에러 관리하기
+    * 아래와 같은 형태로 에러코드를 관리하여, LoginErrorCode.OperationNotAuthorized.getCode(); 과 같이 호출하여 반환 될 메세지를 정리해주고, 조건문에 따라서 정해놓은 @ExceptionHandler 메소드를 호출해주면(throw new NPException;) 에러처리가 끝난다. 중복되는 예외처리 로직을 사용하지 않아도 된다.
+
+    ```Java
+    public enum LoginErrorCode { 
+        OperationNotAuthorized(6000,"Operation not authorized"), 
+        DuplicateIdFound(6001,"Duplicate Id"),  
+        UnrecognizedRole(6010,"Unrecognized Role"); 
+
+        private int code; 
+        private String description; 
+
+        private LoginErrorCode(int code, String description) { 
+            this.code = code; 
+            this.description = description; 
+            } 
+
+        public int getCode() { 
+            return code; 
+        } 
+
+        public String getDescription() { 
+            return description; 
+        } 
+    }
+    ```
+
+
+* * *
 ### 20.01.04 
 * * * 
 #### Spring의 Annotation - 3
