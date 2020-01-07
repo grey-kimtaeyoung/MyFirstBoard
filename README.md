@@ -1,6 +1,55 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.07 
+* * * 
+#### [REST API](https://itstory.tk/entry/%EB%8D%94-%EB%82%98%EC%9D%80-RESTful-API%EB%A5%BC-%EC%84%A4%EA%B3%84%ED%95%98%EA%B8%B0-%EC%9C%84%ED%95%9C-%EC%B5%9C%EA%B3%A0%EC%9D%98-10%EA%B0%80%EC%A7%80-%EC%97%B0%EC%8A%B5%EB%B0%A9%EB%B2%95)
+* REST(Representational State Transfer) API의 목적
+    * 웹기반으로 리소스를 관리할 때 이를 구조적으로 요청 및 제공하기위해 만들어진 API 아키텍처
+
+* HTTP Method
+    * REST API는 수행할 작업의 분리를 http method를 이용하여 구분한다. 특정 URL에 어떤 메소드로 접근하느냐에 따라서 작업의 종류가 결정된다.
+
+    * Idempotent : 여러번 요청시 데이터의 동일성 유지 여부. REST의 표준을 지키는데 매우 중요한 사항이므로 **반드시** 충족해야한다.
+        |Method|Meaning|Idempotent|
+        |------|---|---|
+        |POST|Create|No|
+        |GET|Select|Yes|
+        |PUT|Update|Yes|
+        |DELETE|Delete|Yes|
+
+* Ressource
+    * REST는 리소스 지향적 아키텍쳐이다. 아래의 예시는 리소스를 표현하는 규칙을 나타낸다
+        * 모든 리소스는 명사로 표현 
+        * 풍촌식당의 음식점 메뉴가 http://fungchon/menus이라면 1번 메뉴의 리소스는 http://fungchon/menus/1 이와 같다.
+
+* Characteristic
+    1. 유니폼 인터페이스(Uniform Interface)
+        * 플랫폼에 상관없이 동일한 인터페이스 제공. 이로인해 프론트엔드 기술에 상관없이 동일한 자원 사용 가능하여, 비즈니스로직을 통일하는게 가능
+    2. 무상태(Stateless)
+        * 세션과 같이 클라이언트의 상태를 기억하지 않는다.
+        * 인증같은 부분은 토큰등의 API KEY를 발급하여 관리한다.
+    3. 캐시 가능(Cacheable)
+        * HTTP라는 기존 웹 표준을 그대로 사용하기 때문에, 웹에서 사용하는 기존 인프라를 그대로 활용 가능. 따라서 HTTP의 기능인 캐싱 기능 적용 가능. HTTP 프로토콜 표준에서 사용하는 Last-Modified태그 혹은 E-Tag를 이용하면 캐싱 구현
+    4. 자체 표현 구조(Self-descriptiveness)
+        * 리소스의 경로와 정해진 Method를 보고 API 해석이 가능
+        * 최소한의 문서로 쉽게 사용 가능
+    5. 클라이언트 서버 구조(Client-Server)
+        * 클라이언트-서버라는 구조로 각 부분의 개발 의존성을 최소화 가능
+        * REST 서버는 API를 제공하며, 클라이언트는 사용자 인증, 컨텍스트(세션, 로그인 정보)등을 직접 관리하는 구조로 각각의 역할을 확실하게 분리하기 때문에 서로의 의존성이 줄어든다.
+    6. 계층형 구조(Layered System)
+        * 순수 비즈니스로직, 인증, 암호화, 로드밸런싱 등의 계층을 나누어 개발이 가능
+
+* REST antipattern
+    * 아래 항목이 적용된 API는 REST 하지 **않은** API이다.
+    * GET/POST를 이용한 터널링
+        * http://myweb/users?method=update&id=gildong 이 전형적인 GET을 이용한 터널링
+    * Self-descriptiveness 속성 사용하지 않음
+    * HTTP 응답 코드를 사용하지 않음
+        * 200, 403, 404, 500 등의 응답 코드를 사용해서 구현되어야 한다. 그렇지 않으면 REST라 할 수 없음
+        
+        
+* * *
 ### 20.01.06 
 * * * 
 ##### [스프링 어노테이션 이용하여 예외처리하기](https://jeong-pro.tistory.com/195)
