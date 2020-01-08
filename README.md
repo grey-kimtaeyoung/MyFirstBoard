@@ -54,12 +54,13 @@
     * REST API는 수행할 작업의 분리를 http method를 이용하여 구분한다. 특정 URL에 어떤 메소드로 접근하느냐에 따라서 작업의 종류가 결정된다.
 
     * Idempotent : 여러번 요청시 데이터의 동일성 유지 여부. REST의 표준을 지키는데 매우 중요한 사항이므로 **반드시** 충족해야한다.
-        |Method|Meaning|Idempotent|
-        |------|---|---|
-        |POST|Create|No|
-        |GET|Select|Yes|
-        |PUT|Update|Yes|
-        |DELETE|Delete|Yes|
+    
+    * |Method|Meaning|Idempotent|
+      |------|---|---|
+      |POST|Create|No|
+      |GET|Select|Yes|
+      |PUT|Update|Yes|
+      |DELETE|Delete|Yes|
 
 * Ressource
     * REST는 리소스 지향적 아키텍쳐이다. 아래의 예시는 리소스를 표현하는 규칙을 나타낸다
