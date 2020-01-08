@@ -1,6 +1,49 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.08 
+* * * 
+#### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 1
+* 정의
+    * 영속성 컨텍스트를 뷰 렌더링이 끝나는 시점까지 개발한 상태로 유지하는 것
+
+    * 객체-관계 매핑(ORM, Object-Relational Mapping)의 사용으로 등장하게 된 패턴. 
+
+    * Spring Boot에서 기본으로 설정되어 있다.
+    
+* 에러 발생상황 예제
+    * JPA(Java Persistence API)의 구현체 Hibernate를 이용해 작성
+    * View Layer에서 연관 객체를 사용하려 하면 **LazyInitializationException**이 발생한다.
+        ```Java
+        //Controller 
+        @GetMapping("") 
+        public String home(Model model){ 
+            model.addAttribute("teams", teamService.findAll()); return "home"; 
+        } 
+        //Service 
+        @Transactional public List<Team> findAll(){ 
+            return teamRepository.findAll(); 
+        }
+        ```
+    * Error Message
+        > org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: com.kingbbode.model.Team.members, could not initialize proxy - no Session
+
+    * 에러 원인 분석
+        * findAll 메서드가 종료될 때 Transaction이 종료되며, Transaction의 종료로 JDBC Connection이 disconnect되고, Hibernate Session이 종료되며, 영속 객체는 Detaced 상태로 변경됩니다. 즉 Service Layer에서 관리되는 Transaction이 View Layer로 넘어가면서 종료되었기 때문에 발생하는 문제인 것 입니다.
+
+* 문제점을 해결하기 위한 방법들의 등장
+    * 뷰 렌더링에 필요한 객체 그래프를 모두 로드
+        * 뷰에서 필요로 하는 모든 연관 관계의 객체를 `EAGER Fetch`로 설정하거나, Join 쿼리를 작성하는 방법입니다. 그러나 REPOSITORY의 재사용성 감소 및 복잡성 증가를 야기하는 방법이며, 뷰와 영속성 관심사의 강한 결합(뷰를 수정하면, 모델도 변경해야 하는)은 관심사의 분리 원칙을 위반하게 됩니다.
+    * POJO FACADE 패턴
+        * 애플리케이션 레이어 안에서 새로운 객체를 통해 프록시를 초기화한 후 사용자 인터페이스로 반한하는 방법입니다. POJO FACADE 패턴은 뷰에 대한 관심사를 애플리케이션 레이어의 흐름 관리와 관련된 관심사와 혼합하는 것 입니다. 비록 SERVICE와 독립된 별도의 Pojo 객체에 프록시 초기화 로직을 위치시킨다고 해도 애플리케이션 레이어 개발시에 렌더링될 뷰에 대한 존재와 렌더링과 관련된 요구사항을 고려해야 합니다.
+        * POJO FACADE 패턴의 가장 적절한 용도는 분산 환경에서 원격 통신을 지원하기 위한 REMOTE FACADE[Fowler PEAA]로 사용하는 것 입니다. 분산 환경이 아닌 단일 JVM 상에서 뷰를 렌더링하기 위한 객체 그래프를 전달하는 경우에는 POJO FACADE 를 사용하는 것을 권하지 않습니다.
+        * 뷰 렌더링에 필요한 객체 그래프를 모두 로드하는 방식은 많은 단점이 존재하며, POJO FACADE 패턴은 분산 환경에 적합하다는 결론입니다. 그리고 등장한 것이 Open Session In View 패턴 입니다
+
+* 최종적인 문제의 해결방안 Open Session In View 패턴
+    * 뷰 렌더링 시점에 영속성 컨텍스트가 존재하지 않기 때문에 Detached 객체의 프록시를 초기화할 수 없다면 영속성 컨텍스트를 오픈된 채로 뷰 렌더링 시점까지 유지하자는 것 입니다. 즉, 작업 단위를 요청 시작 시점부터 뷰 렌더링 완료 시점까지로 확장하는 것 입니다. Open Session In View 패턴에 대한 많은 논쟁들이 있었지만, 결론은 Open Session In View 패턴은 레이어 아키텍처를 해치는 안티패턴이 아니라는 것 입니다.
+    
+    
+* * *
 ### 20.01.07 
 * * * 
 #### [REST API](https://itstory.tk/entry/%EB%8D%94-%EB%82%98%EC%9D%80-RESTful-API%EB%A5%BC-%EC%84%A4%EA%B3%84%ED%95%98%EA%B8%B0-%EC%9C%84%ED%95%9C-%EC%B5%9C%EA%B3%A0%EC%9D%98-10%EA%B0%80%EC%A7%80-%EC%97%B0%EC%8A%B5%EB%B0%A9%EB%B2%95)
