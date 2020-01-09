@@ -1,6 +1,38 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.09 
+* * * 
+#### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 2
+* open session in view를 이해하기위한 지식 - 영속성 컨텍스트
+    * 정의
+        * Hibernate는 도메인 레이어 객체들이 하부의 데이터 저장소와 영속성 메커니즘에 대해 알지 않아도 되는 _투명한 영속성(transparent persistence)_ 을 제공하는 _비침투적인(nonintrusive)_ 프레임워크입니다.
+
+        * 영속성과 관련된 모든 관심사는 도메인 객체로부터 격리된 채 관리자 객체에 의해 투명하게 처리되는데, 이 관리자 객체의 기능을 담당하는 객체가 Hibernate의 _Session 객체_ 이며, _Sesstion 객체_ 는 _영속성 컨텍스트_ 를 포함한다.
+
+        * 영속성 컨텍스트를 이애하기 위해서는 _Transaction_ 을 이해하고있어야한다. _Transaction_ 은 쪼갤 수 없는(아토믹한) 업무처리의 단위로, 작업의 원자 단위라고 보면되며, 영속성 컨텍스트는 _Transaction_ 과 1:1로 연결된다.
+
+        * 하나의 _Transaction_ 동안 수정된 객체의 모든 상태는 영속성 컨텍스트 내에 저장되어, _Transaction_ 이 종료될 때 데이터 저장소에 동기화(flushing)된디ㅏ. 따라서 Hibernate Session을 하나의 작업 단위 동안 생성 및 조회, 수정, 삭제되는 객체의 상태를 보관하는 일종의 _캐시_ 로 간주해도 무방하다. - 실제로 Hibernate Sesstion을 _1차 캐시_ 라고 부르기도 한다.
+
+    * Transaction 예제
+        *   ```Java
+            @Transactional
+            public void moveTeam(Long memberIdx, Team team){ 
+                Member member = memberRepository.findOne(memberIdx);
+                member.moveTeam(team);
+            } 
+            ```
+        * 위 moveTeam 메서드가 실행될 때 @Transactional 어노테이션에 의해 자동으로 Hibernate Sesstion이 열리게 된다. 조회(findOne)을 통해 가져온 Member 객체는 영속성 컨텍스트에 캐쉬되고, Transaction 동안 Member 객체의 변경 사항이 추적된다.  이 때 Member 객체는 영속성을 갖는다고 말한다. moveTeam에 의해 영속성을 갖는 Member 객체가 변경된 것을 영속성 컨텍스트가 감지하게 된다. Transaction이 종료되는 시점인 메서드 종료 시점에 영속성 컨텍스트가 캐시하고 있는 변경 상태를 저장소와 동기화하게 되며, 이때 update 쿼리가 자동으로 실행된다.
+
+    * 영속성을 갖는 객체의 상태
+        * Persistence
+        * Detached
+        * Transient
+        * Removed
+        * ![상태 그래프](https://kingbbode.github.io/images/2016/2016_12_28_OPEN_SESSION_IN_VIEW/status.png)
+        
+        
+* * *
 ### 20.01.08 
 * * * 
 #### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 1
