@@ -3,6 +3,30 @@
 * * *
 ### 20.01.09 
 * * * 
+#### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 3
+* open session in view를 이해하기위한 지식 - 영속성을 갖는 객체의 상태
+    * 영속성을 갖는 객체의 상태
+        * Persistence
+            * 데이터베이스 식별자(primary key)를 가지며, 작업 단위 내에서 영속성에 의해 관리되는 상태(추가 설명 보강)
+                > Transaction 안에서 조회, 저장, 수정 등을 통해 가져온 영속성이 부여된 상태를 Persistence 상태라 하며, Transient 상태의 객체도 강제로 Persistence 상태로 전환시킬 수 있습니다.
+            
+        * Detached
+            * 데이터베이스 식별자를 가지지만 영속성 컨텍스트로부터 분리되어 더이상 데이터베이스와의 동기화가 보장되지 않는 상태
+                > Session.close() 메소드는 Session을 닫고 영속성 컨텍스트를 포함한 모든 자원을 반환하며, 관리하에 있는 모든 영속성 인스턴스를 Detached 상태로 변경시킵니다. Hibernate는 Detached 상태의 객체에 대해서는 변경사항을 추적하지 않으며, 따라서 데이터베이스와의 동기화 또한 수행하지 않습니다.
+
+        * Transient
+            * 아무 상태도 가지지 않는 상태(무 상태를 정의하기 위한 상태)
+                > new 연산자를 사용하여 생성한 객체는 곧바로 Persistence 상태가 되지 않고 Transient 상태를 갖게 됩니다.
+
+        * Removed
+            * 제거될 상태
+                > Transaction이 종료되는 시점에 삭제될 객체는 Removed 상태를 갖습니다.
+        * ![상태 그래프](https://kingbbode.github.io/images/2016/2016_12_28_OPEN_SESSION_IN_VIEW/status.png)
+
+
+* * *
+### 20.01.09 
+* * * 
 #### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 2
 * open session in view를 이해하기위한 지식 - 영속성 컨텍스트
     * 정의
@@ -23,13 +47,6 @@
             } 
             ```
         * 위 moveTeam 메서드가 실행될 때 @Transactional 어노테이션에 의해 자동으로 Hibernate Sesstion이 열리게 된다. 조회(findOne)을 통해 가져온 Member 객체는 영속성 컨텍스트에 캐쉬되고, Transaction 동안 Member 객체의 변경 사항이 추적된다.  이 때 Member 객체는 영속성을 갖는다고 말한다. moveTeam에 의해 영속성을 갖는 Member 객체가 변경된 것을 영속성 컨텍스트가 감지하게 된다. Transaction이 종료되는 시점인 메서드 종료 시점에 영속성 컨텍스트가 캐시하고 있는 변경 상태를 저장소와 동기화하게 되며, 이때 update 쿼리가 자동으로 실행된다.
-
-    * 영속성을 갖는 객체의 상태
-        * Persistence
-        * Detached
-        * Transient
-        * Removed
-        * ![상태 그래프](https://kingbbode.github.io/images/2016/2016_12_28_OPEN_SESSION_IN_VIEW/status.png)
         
         
 * * *
