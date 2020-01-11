@@ -1,7 +1,52 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
-### 20.01.09 
+### 20.01.11 
+* * * 
+#### 모듈 분리
+* 프로젝트 모듈화를 통한 역할 분리 작업
+    * 모듈 생성하기
+        1. (Root Project) alt + n
+        1. New
+        2. Module
+        3. Gradle/Java
+        4. ArtifactId : module name
+        5. finish
+
+    * 모듈별 필요한 클래스 이동(IntelliJ 기능)
+        1. 옮기려는 패키지 오른쪽 클릭
+        2. Refactor
+        3. Move Package or Directory
+        4. 3가지 선택지 중 필요한 형태의 옵션 선택하여 클래스 위치 변경
+
+    * 모듈 포함시키기
+        * project에 module 포함시키기
+            1. root directory
+            2. settings.gradle
+            3. include 'module name'
+            * tip - 주로 공통으로 사용되는 모듈은 최상단으로 올려준다.
+        
+        * module에서 다른 module 포함시키기
+            1. build.gradle
+            2. in dependencies
+            3. implementation project(':module name')
+            * example
+                ```
+                dependencies {
+                    implementation project(':ordering-common')
+                }
+                ```
+
+    * 분리된 모듈별 테스트 셋팅
+        1. edit configuration
+        2. Add Junit4
+        3. Tesk kind : all Package
+        4. Search for tests : in single module
+        5. User classpath of module : 사용 할 테스트 클래스 패스
+
+
+* * *
+### 20.01.10 
 * * * 
 #### [spring - open seesion in view](https://kingbbode.tistory.com/27) - 3
 * open session in view를 이해하기위한 지식 - 영속성을 갖는 객체의 상태
