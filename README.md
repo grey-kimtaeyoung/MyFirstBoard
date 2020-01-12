@@ -1,6 +1,14 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.12 
+* * * 
+#### [하루종일 집에서 명상음악 들으면서 업무, 스터디 리뷰](https://www.youtube.com/watch?v=nKHBIAdBvZ4&list=PLLnunhcTXCPK-PTCT-3SeUllA-EK9Zwjj&index=8&t=2625s)
+* 지난 5일간 업무 진행내역 확인
+* 지난 5일간 스터디 내역 확인
+    * 다음주 부터는 매 주 일요일마다 월~토 학습내역 총정리해서 하나로 묶기
+
+* * *
 ### 20.01.11 
 * * * 
 #### 모듈 분리
