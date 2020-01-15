@@ -1,9 +1,24 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.15 
+* * * 
+#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 2
+* common 모듈 설정
+    * 아래 jar 파일 설정을 해줘야 타 모듈에서 common 모듈을 호출할 때 이슈 없이 작동한다.
+    ```
+    bootJar {
+        enabled = false
+    }
+    jar {
+        enabled = true
+    }
+    ```
+
+* * *
 ### 20.01.14 
 * * * 
-#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123)
+#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 1
 * 멀티 모듈이 생긴 이유
     * 대부분의 서비스는 단일 프로젝트로 구성되는 일이 거의 없습니다.
 아무리 작게 구성해도 일정 수준 이상의 트래픽을 감당하려면 사용자와의 접점을 담당하는 서버(이하 web프로젝트라고 하겠습니다.), DB와의 접점을 담당하는 서버(api프로젝트라 칭하겠습니다.)로 구분하여 구성하게 됩니다.
