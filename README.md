@@ -1,6 +1,12 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.16 
+* * * 
+#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 3
+* common, api, customer 분할
+  
+* * *
 ### 20.01.15 
 * * * 
 #### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 2
