@@ -3,8 +3,16 @@
 * * *
 ### 20.01.16 
 * * * 
+#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 4
+* 역할에 맞춰 코드 제거 및 생성
+
+
+* * *
+### 20.01.16 
+* * * 
 #### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 3
 * common, api, customer 분할
+  
   
 * * *
 ### 20.01.15 
