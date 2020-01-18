@@ -1,6 +1,13 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.17 
+* * * 
+#### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 5
+* 역할 분리 마무리 및 전체 테스트 통과
+
+
+* * *
 ### 20.01.16 
 * * * 
 #### [Gradle을 이용한 멀티모듈](https://jojoldu.tistory.com/123) - 4
