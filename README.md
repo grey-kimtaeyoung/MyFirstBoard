@@ -1,6 +1,12 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.20 
+* * * 
+#### Junit4 Test
+* getMenuItems 서비스 구현
+
+* * *
 ### 20.01.19 
 * * * 
 #### Junit4 Test
