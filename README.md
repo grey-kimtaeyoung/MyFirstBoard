@@ -1,6 +1,12 @@
 # CRUD-board-basic
 ## 학습 내용 정리
 * * *
+### 20.01.22 
+* * * 
+#### Junit4 Test
+* review list 테스트코드 수정
+
+* * *
 ### 20.01.21 
 * * * 
 #### Junit4 Test
